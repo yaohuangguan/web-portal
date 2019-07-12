@@ -1,29 +1,52 @@
-# front-end-vue
+# Frontend Vue Project
 
-## Project setup
+used vue.js to create this website mainly front end
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+What things you need to install the software and how to install them
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
 ```
-npm run serve
+You need to install node.js
 ```
 
-### Compiles and minifies for production
+Run the app
+
 ```
-npm run build
+npm run dev
 ```
 
-### Run your tests
-```
-npm run test
-```
 
-### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Built With
+
+* [mdboostrap](http://www.mdbootstrap.com/) - The web framework used
+* [bootstrap](https://getbootstrap.com/) 
+* [Vue](https://vuejs.org) 
+
+
+
+## Authors
+
+* **Sam yao** - *Initial work* - [moviegoersam(https://github.com/yaohuangguan)
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+
