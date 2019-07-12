@@ -1,4 +1,4 @@
-# Frontend Vue Project
+# selling platform
 
 used vue.js to create this website mainly front end
 
