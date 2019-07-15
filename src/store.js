@@ -463,9 +463,11 @@ const store = new Vuex.Store({
   mutations: {
     ADD_PRODUCT: (state, product) => {
 
-      let found = state.cartProducts.find((item) => {
-        return item.id === product.id && item.message === product.message
-      })
+      // let found = state.cartProducts.find((item) => {
+      //   return item.id === product.id && item.message === product.message
+      // })
+      let found = state.cartProducts.find(item => item.id == product.id);
+
        
 
 
@@ -494,7 +496,7 @@ const store = new Vuex.Store({
     },
 
     removeFromCart: (state, product) => {
-      let index = state.cartProducts.indexOf(product);
+         let index = state.cartProducts.indexOf(product);
       let found = state.cartProducts.find(item => item.id == product.id);
       if (found.count > 1) {
         found.count--;
@@ -502,11 +504,13 @@ const store = new Vuex.Store({
       } else {
         state.cartProducts.splice(index,1);
 
-        const fadeOutLeft = document.getElementById('animatedRow');
       
-        fadeOutLeft.classList.add('animated','fadeOutLeft')
-        // fadeOutLeft.addEventListener('animationend', function() { fadeOutLeft.classList.remove('animated','fadeOutLeft') })
+       
       }
+      // const fadeOutLeft = document.getElementById('animatedRow');
+      
+      // fadeOutLeft.classList.add('animated','fadeOutLeft')
+      // fadeOutLeft.addEventListener('animationend', function() { fadeOutLeft.classList.remove('animated','fadeOutLeft') })
 
       state.cartCount--;
 
