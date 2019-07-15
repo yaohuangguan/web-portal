@@ -9,7 +9,7 @@
       </li>
 
 
-      <btn btnColor="btn btn-info1 btn-popup" v-b-modal.modal-tall @click.native="showPopupCart()">
+      <btn btnColor="btn btn-info1 btn-popup" id="cartAnimate" v-b-modal.modal-tall @click.native="showPopupCart()">
         <i class="fas fa-shopping-bag fa-lg"></i>
         <span class="btn-circle" v-if="hasProduct()">
           <i class="cartNum">

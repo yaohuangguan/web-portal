@@ -128,7 +128,7 @@
                     <p class="dark-grey-text">Tax: <span class="float-right">{{tax()}}$</span></p>
                     <h4>Total:<span class="float-right">{{Total()}}$</span></h4>
                     <hr>
-                    <button class="btn btn-c btn-lg btn-block" @load="loader" id="btn-two" type="submit">Place
+                    <button class="btn btn-c btn-lg btn-block" @click="loader" id="btn-two" type="submit">Place
                       Order</button>
 
                     <h6 class="hr">
@@ -184,9 +184,7 @@
           '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Loading...';
         loader.classList.add('disabled')
       },
-      created() {
-        window.addEventListener("load", this.loader);
-      },
+     
       totalPrice() {
         let subtotal = 0;
 

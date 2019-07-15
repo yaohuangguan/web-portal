@@ -120,7 +120,7 @@
 
                     <hr>
 
-                    <button class="btn btn-c btn-lg btn-block" id="btn-one" @load="loader" type="submit">Place
+                    <button class="btn btn-c btn-lg btn-block" id="btn-one" @click="loader" type="submit">Place
                       Order</button>
 
 
@@ -177,9 +177,7 @@
           '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Loading...';
         loader.classList.add('disabled')
       },
-      created() {
-        window.addEventListener("load", this.loader);
-      },
+      
 
       totalPrice() {
         let subtotal = 0;

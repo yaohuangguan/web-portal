@@ -9,9 +9,9 @@
             <div class="container">
               <div class="row">
                 <div class="col-lg-8">
-                  <div class="intro-body fadeIn">
+                  <div class="intro-body">
                    
-                    <h1 class="intro-title mb-4">
+                    <h1 class="intro-title mb-4 animated lightSpeedIn">
                       NOW  GET
                       <br> YOUR FRESH<span class="color-b"> COOKIES</span></h1>
                     <div>

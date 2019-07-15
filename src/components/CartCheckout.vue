@@ -37,7 +37,7 @@
               <tbody v-for="(product, index) in getProductsInCart" :key="index" >
 
                 <!-- First row -->
-                <tr>
+                <tr id="animatedRow">
                   <th scope="row">
                     <img :src="product.image" class="img-fluid img-b z-depth-0" style="grid-column:1/2;width:50%">
                   </th>
@@ -114,7 +114,7 @@
        
       <br>
     </div>
-      <br><br><br><br><br><br><br><br><br>
+      <br><br><br><br><br>
 
     </div>
     <Footer />

@@ -4,7 +4,10 @@ let cartProducts = window.localStorage.getItem('cartProducts');
 let cartCount = window.localStorage.getItem('cartCount');
 Vue.use(Vuex);
 
-
+ function saveCart (cartProducts, cartCount) {
+  window.localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
+  window.localStorage.setItem('cartCount',cartCount);
+}
 const store = new Vuex.Store({
   
   state: {
@@ -460,7 +463,11 @@ const store = new Vuex.Store({
   mutations: {
     ADD_PRODUCT: (state, product) => {
 
-      let found = state.cartProducts.find(item => item.id == product.id);
+      let found = state.cartProducts.find((item) => {
+        return item.id === product.id && item.message === product.message
+      })
+       
+
 
       if (found) {
         found.count++;
@@ -472,52 +479,64 @@ const store = new Vuex.Store({
         Vue.set(product, 'totalPrice', product.price);
       }
 
+      const bounce = document.getElementById('cartAnimate');
+      
+      bounce.classList.add('animated','bounce')
+      bounce.addEventListener('animationend', function() { bounce.classList.remove('animated','bounce') })
+
       state.cartCount++;
-      this.commit('saveCart');
+      saveCart(state.cartProducts,state.cartCount)
     },
     removeAll: (state) => {
       state.cartProducts.splice(0);
-      let empty = document.querySelector(".empty");
-      empty.classList.add('zoomOut');
-      this.commit('saveCart');
+     
+      saveCart(state.cartProducts,state.cartCount)
     },
 
-    removeFromCart: (state, product, index) => {
+    removeFromCart: (state, product) => {
+      let index = state.cartProducts.indexOf(product);
       let found = state.cartProducts.find(item => item.id == product.id);
       if (found.count > 1) {
         found.count--;
         found.totalPrice = found.count * found.price;
       } else {
-        state.cartProducts.splice(index, 1)
+        state.cartProducts.splice(index,1);
+
+        const fadeOutLeft = document.getElementById('animatedRow');
+      
+        fadeOutLeft.classList.add('animated','fadeOutLeft')
+        // fadeOutLeft.addEventListener('animationend', function() { fadeOutLeft.classList.remove('animated','fadeOutLeft') })
       }
 
       state.cartCount--;
 
-      this.commit('saveCart');
+      saveCart(state.cartProducts,state.cartCount)
     },
-    saveCart(state) {
-      window.localStorage.setItem('cartProducts', JSON.stringify(state.cartProducts));
-      window.localStorage.setItem('cartCount', state.cartCount);
-    },
+    
     updateMessage(state, message) {
       state.currentProduct.message = message;
-      this.commit('saveCart');
+      saveCart(state.cartProducts,state.cartCount)
+
     },
     updateFlavor(state, flavor) {
       state.currentProduct.flavor = flavor;
-      this.commit('saveCart');
+      saveCart(state.cartProducts,state.cartCount)
+
     },
     updateSize(state, size) {
       state.currentProduct.size = size;
-      this.commit('saveCart');
+      saveCart(state.cartProducts,state.cartCount)
+
     },
     updateShape(state, shape) {
       state.currentProduct.shape = shape;
-      this.commit('saveCart');
+      saveCart(state.cartProducts,state.cartCount)
+
     },
     updateColor(state, color) {
       state.currentProduct.color = color;
-      this.commit('saveCart');
+      saveCart(state.cartProducts,state.cartCount)
+
     },
     CURRENT_PRODUCT: (state, product) => {
       state.currentProduct = product;

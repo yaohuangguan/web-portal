@@ -27,7 +27,7 @@
           
              <a @click.prevent="removeAll(product)" v-if="hasProduct()" class="empty"><span ><b>Empty Cart</b><i class="far fa-trash-alt"></i></span></a>
        
-    <div v-for="(product, index) in getProductsInCart"  :key="index" class="box-item"  >
+    <div v-for="(product, index) in getProductsInCart"  :key="index" class="box-item animatedRow" >
       <img :src="product.image" alt="" class="item-thumb">
       <h3 class="item-name">{{ product.name }}</h3>
      
