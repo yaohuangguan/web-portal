@@ -78,7 +78,7 @@
       ]),
     },
 
-    created() { //让页面一进来就掉用这个钩子;判断有没有之前存储的wxoken,有,就用token解析包解析然后存在vuex里面
+    created() { 
       if (localStorage.wxToken) {
         const decode = jwt_decode(localStorage.wxToken);
         this.$store.dispatch('setUser', decode);

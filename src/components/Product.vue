@@ -116,7 +116,7 @@
        <videoModal/>
        <br><br><br><br>
        <foodintro/>
-       <comment/>
+       <!-- <comment/> -->
       
     </div>
      <Footer/>
@@ -128,14 +128,14 @@ import { mapGetters, mapActions } from 'vuex';
 import btn from './Btn';
 import videoModal from '@/components/videoModal'
 import foodintro from '@/components/order/foodintro'
-import comment from '@/components/order/comment'
+// import comment from '@/components/order/comment'
 import Footer from '@/components/Footer'
 export default {
   components: {
     btn,
     
     foodintro,
-    comment,
+    // comment,
     Footer,
     videoModal
   },

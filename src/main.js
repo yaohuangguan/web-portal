@@ -20,12 +20,12 @@ import '@/assets/custom.scss'
 import '@/assets/js/relate.js'
 
 Vue.config.productionTip = false
-
 Vue.component("app-nav",Navbar);
 
 new Vue({
   router,
   store,
+ 
   render: h => h(App)
 }).$mount('#app')
 

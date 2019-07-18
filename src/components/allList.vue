@@ -6,7 +6,7 @@
 
    
       <ul class="listOfProducts">
-        <li v-for="(product, index) in products" :key="index" class="product">
+        <li v-for="(product,index) in products" :key="index" class="product">
            <div class="card">
          
           
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import btn from './Btn';
 
 
@@ -69,6 +69,12 @@ export default {
     btn,
      
   },
+  // mounted () {
+  //   this.$store.dispatch('getProduct')
+  // },
+  // computed: mapState([
+  //   'cartProduct'
+  // ]),
   methods: {
     ...mapActions([
       'addProduct',

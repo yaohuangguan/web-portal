@@ -55,7 +55,7 @@
                   <td></td>
                   <td class="font-weight-bold"><b>$ {{ product.price }},00</b></td>
                   <td>
-                    <input type="number"  class="form-control" style="width: 100px" min="1" v-model.number="product.count">
+                    <input type="number"  class="form-control" style="width: 100px" min="1" v-model.number="product.count" >
                   </td>
 
                   <td v-if="hasProduct()">
@@ -131,10 +131,7 @@
   export default {
      
    
-    watch:{
-          
-        
-    },
+    
     computed: {
       ...mapGetters(["getProductsInCart"],{
          currentProduct: 'getCurrentProduct',
@@ -158,7 +155,10 @@
       hasProduct() {
         return this.getProductsInCart.length > 0;
       },
-
+        // changePrice(value){
+        //   this.$store.commit('changeCount', product);
+       
+        // },
       
        totalPrice() {
         let subtotal = 0;

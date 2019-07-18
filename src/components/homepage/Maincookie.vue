@@ -11,7 +11,7 @@
        
         <div class="title-single-box">
 
-              <h1 class="title-single" style="color:#444; font-size:30px" >Goat's Favorite</h1>
+              <h1 class="title-single" style="color:#444; font-size:30px" >Seasonal</h1>
 
             </div>
 
@@ -24,7 +24,40 @@
      <div class="container">
        
         <div class="title-single-box">
-              <h1 class="title-single" style="color:#444;font-size:30px">Cake</h1>
+              <h1 class="title-single" style="color:#444;font-size:30px">Corporate Logo</h1>
+             
+            </div>
+        
+      <CakeList/>
+     </div>
+
+<br><br><br><br>
+     <div class="container">
+       
+        <div class="title-single-box">
+              <h1 class="title-single" style="color:#444;font-size:30px">For Kids</h1>
+             
+            </div>
+        
+      <CakeList/>
+     </div>
+
+<br><br><br><br>
+     <div class="container">
+       
+        <div class="title-single-box">
+              <h1 class="title-single" style="color:#444;font-size:30px">Cultural</h1>
+             
+            </div>
+        
+      <CakeList/>
+     </div>
+
+<br><br><br><br>
+     <div class="container">
+       
+        <div class="title-single-box">
+              <h1 class="title-single" style="color:#444;font-size:30px">Celebration</h1>
              
             </div>
         

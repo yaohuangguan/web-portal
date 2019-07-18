@@ -87,11 +87,7 @@ const router =  new Router({
         name: 'checkout',
         component: ()=>import('@/views/checkout.vue'),
       },
-      {
-        path: '/pickup',
-        name: 'checkout',
-        component: ()=>import('@/views/checkout2.vue'),
-      },
+      
       {
         path: '/checkout-payment',
         name: 'checkout',
@@ -103,7 +99,7 @@ const router =  new Router({
         component: ()=>import('@/views/bakerylocation.vue'),
       },
       {
-        path: '/order-success',
+        path: '/order-success/:id',
         name: 'order-success',
         component: ()=>import('@/views/confirmation.vue'),
       },

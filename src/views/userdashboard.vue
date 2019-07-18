@@ -2,7 +2,7 @@
      <div class="container">
           <div>
         <br><br><br><br>
-        <h1 class="font-weight-bold">Welcome!{{user.username}}}</h1>
+        <h1 class="font-weight-bold">Welcome!</h1>
           </div>
           <div class="row">
                <div class="card col-md-4">
