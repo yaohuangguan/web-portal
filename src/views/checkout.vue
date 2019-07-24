@@ -8,7 +8,7 @@
       <br />
       <div>
         <div class="card-body">
-          <form>
+          <form class="form-a" action="/charge" method="post">
             <!--Grid row-->
             <div class="row">
               <!--Grid column-->
@@ -33,90 +33,123 @@
                     <!--Grid row-->
                     <div class="row">
                       <!--Grid column-->
-                      <div class="col-md-6 mb-4">
+                      <fieldset class="col-md-6 mb-4">
                         <!--firstName-->
-                        <label for="firstName" class>First name</label>
-                        <input type="text" id="firstName" class="form-control" placeholder="First Name" v-model="firstName" />
-                      </div>
+                        <legend for="firstName" class>First name</legend>
+                        <input
+                          type="text"
+                          id="firstName"
+                         :class="['is-danger' ? firstNameError : '', 'form-control']"
+                          placeholder="First Name"
+                          v-model="firstName"
+                          required
+                          autofocus
+                        />
+                        <div class="help is-danger" v-show="firstNameError">{{firstNameError}}</div>
+                      </fieldset>
                       <!--Grid column-->
 
                       <!--Grid column-->
-                      <div class="col-md-6 mb-2">
+                      <fieldset class="col-md-6 mb-2">
                         <!--lastName-->
-                        <label for="lastName" class>Last name</label>
-                        <input type="text" id="lastName" class="form-control" placeholder="Last Name" v-model="lastName" />
-                      </div>
+                        <legend for="lastName" class>Last name</legend>
+                        <input
+                          type="text"
+                          id="lastName"
+                         :class="['is-danger' ? lastNameError : '', 'form-control']"
+                          placeholder="Last Name"
+                          v-model="lastName"
+                        />
+                        <div class="help is-danger" v-show="lastNameError">{{lastNameError}}</div>
+                      </fieldset>
                       <!--Grid column-->
                     </div>
                     <!--Grid row-->
 
-                    <!--email-->
-
-                      <div class="has-icons-left has-icons-right">
-                        <label>Cellphone</label>
-                        <input
-                          type="number"
-                          id="phone"
-                          class="form-control mb-4"
-                          placeholder="xxx-xxxx-xxxx"
-                          v-model="phone"
-                          required
-                        />
-                      
-                      </div>
-              
-
-                    <!--address-->
-                    <label for="address" class>Address</label>
+                     <fieldset>
+                    <legend for="address" class>Address</legend>
                     <input
                       type="text"
 
-                      class="form-control mb-4"
+                       :class="['is-danger' ? addressStreetError : '', 'form-control mb-2']"
                       placeholder="1234 Main St"
                       v-model="address.street"
                       required
                     />
+                    <div class="help is-danger" v-show="addressStreetError">{{addressStreetError}}</div>
+                     </fieldset>
 
-              
+                    <fieldset class="has-icons-left has-icons-right">
+                      <legend>Cellphone</legend>
+                      <input
+                        type="number"
+                        id="phone"
+                        :class="['is-danger' ? phoneError : '', 'form-control d-block w-100 mb-2']"
+                        placeholder="xxx-xxxx-xxxx"
+                        v-model="phone"
+                        required
+                      />
+                      <div class="help is-danger" v-show="phoneError">{{phoneError}}</div>
+                    </fieldset>
+
                    
+                    
 
                     <!--Grid row-->
                     <div class="row">
                       <!--Grid column-->
-                      <div class="col-lg-4 col-md-12 mb-4">
-                        <label>State</label>
-                        <input class="form-control d-block w-100" v-model="address.state" placeholder="OH" required>
+                      <fieldset class="col-lg-4 col-md-12 mb-4">
+                        <legend>State</legend>
+                        <input
+                          :class="['is-danger' ? addressStateError : '', 'form-control d-block w-100']"
+                          v-model="address.state"
+                          placeholder="OH"
+                          required
+                        />
+
+                        <div class="help is-danger" v-show="addressStateError">{{addressStateError}}</div>
+                      </fieldset>
+                      <!--Grid column-->
+
+                      <!--Grid column-->
+                      <fieldset class="col-lg-4 col-md-6 mb-4">
+                        <legend>City</legend>
+                        <input
                          
-                        <div class="invalid-feedback">Please select a valid country.</div>
-                      </div>
+                          :class="['is-danger' ? addressCityError : '', 'form-control d-block w-100']"
+                          type="text"
+                          v-model="address.city"
+                          placeholder="Columbus"
+                          required
+                        />
+
+                        <div class="help is-danger" v-show="addressCityError">{{addressCityError}}</div>
+                      </fieldset>
                       <!--Grid column-->
 
                       <!--Grid column-->
-                      <div class="col-lg-4 col-md-6 mb-4">
-                        <label >City</label>
-                        <input class="form-control d-block w-100"  
-                        type="text" v-model="address.city" placeholder="Columbus"
-                        required>
-                          
-
-                        <div class="invalid-feedback">Please provide a valid state.</div>
-                      </div>
-                      <!--Grid column-->
-
-                      <!--Grid column-->
-                      <div class="col-lg-4 col-md-6 mb-4">
-                        <label>Zip</label>
-                        <input type="text" class="form-control" placeholder="90000" v-model="address.zip" required />
-                        <div class="invalid-feedback">Zip code required.</div>
-                      </div>
-                       <div class="col-md-6 mb-4">
-                       <label>Special Note</label>
-        <textarea
-          class="textarea"
-          placeholder="What would you like the note to say?"
-          v-model="engravingText"
-        ></textarea>
-        </div>
+                      <fieldset class="col-lg-4 col-md-6 mb-4">
+                        <legend>Zip</legend>
+                        <input
+                          type="text"
+                          :class="['is-danger' ? addressZipError : '', 'form-control']"
+                          placeholder="90000"
+                          v-model="address.zip"
+                          required
+                        />
+                        <div class="help is-danger" v-show="addressZipError">{{addressZipError}}</div>
+                      </fieldset>
+                     
+                        <fieldset class="col-lg-6 col-md-6 mb-4">
+                          <legend style="font-size:20px">Special Note</legend>
+                          <textarea
+                            class="form-control"
+                            placeholder="What would you like the note to say?" cols="45"
+                  rows="4"
+                            v-model="engravingText"
+                          ></textarea>
+                        </fieldset>
+                    
                       <!--Grid column-->
                     </div>
                     <hr />
@@ -137,7 +170,9 @@
                           />
                         </a>
                       </div>
-                      <h6 class="hr">OR</h6>
+                      <div class="col-md-4 text-center">
+                        <h6 class="hr">OR</h6>
+                      </div>
                       <div class="mb-2">
                         <input
                           name="group2"
@@ -158,34 +193,57 @@
                     </div>
 
                     <div class="row">
-                      <div class="col-md-6 mb-4">
+                      <fieldset class="col-md-6 mb-4">
                         <!--firstName-->
-                        <label for="card_number" class>Card Number</label>
-                        <input type="text" id="card_number" v-model="card.number"  :class="['is-danger' ? cardNumberError : '', 'form-control']" />
+                        <legend for="card_number" class>Card Number</legend>
+                        <input
+                          type="text"
+                          id="card_number"
+                          v-model="card.number"
+                          :class="['is-danger' ? cardNumberError : '', 'form-control']"
+                        />
                         <span class="help is-danger" v-show="cardNumberError">{{ cardNumberError }}</span>
-                      </div>
+                      </fieldset>
 
-                      <div class="col-md-6 mb-4">
+                      <fieldset class="col-md-6 mb-4">
                         <!--firstName-->
-                        <label for="cvc">CVC</label>
-                        <input type="text" id="cvc" v-model="card.cvc" class="form-control" placeholder="123" />
+                        <legend for="cvc">CVC</legend>
+                        <input
+                          type="text"
+                          id="cvc"
+                          v-model="card.cvc"
+                         :class="['is-danger' ? cardCvcError : '', 'form-control']"
+                          placeholder="123"
+                        />
                         <span class="help is-danger" v-show="cardCvcError">{{ cardCvcError }}</span>
-                      </div>
-                      <div class="col-md-6 mb-4">
+                      </fieldset>
+                      <fieldset class="col-md-6 mb-4">
                         <!--firstName-->
-                        <label for="exp_month">Expiration Month</label>
-                        <input type="text" id="exp_month" v-model="card.exp_month" :class="['is-danger' ? cardMonthError : '', 'form-control']" placeholder="MM" />
+                        <legend for="exp_month">Expiration Month</legend>
+                        <input
+                          type="text"
+                          id="exp_month"
+                          v-model="card.exp_month"
+                          :class="['is-danger' ? cardMonthError : '', 'form-control']"
+                          placeholder="MM"
+                        />
                         <span class="help is-danger" v-show="cardMonthError">{{ cardMonthError }}</span>
-                      </div>
-                      <div class="col-md-6 mb-4">
+                      </fieldset>
+                      <fieldset class="col-md-6 mb-4">
                         <!--firstName-->
-                        <label for="exp_year">Expiration year</label>
-                        <input type="text" id="exp_year" v-model="card.exp_year" :class="['is-danger' ? cardYearError : '', 'form-control']" placeholder="YY" />
+                        <legend for="exp_year">Expiration year</legend>
+                        <input
+                          type="text"
+                          id="exp_year"
+                          v-model="card.exp_year"
+                          :class="['is-danger' ? cardYearError : '', 'form-control ']"
+                          placeholder="YY"
+                        />
                         <span class="help is-danger" v-show="cardYearError">{{ cardYearError }}</span>
+                      </fieldset>
+                      <div class="help is-danger" v-if="cardCheckError">
+                        <span style="color:red">{{ cardCheckErrorMessage }}</span>
                       </div>
-                        <div class="help is-danger" v-if="cardCheckError">
-          <span>{{ cardCheckErrorMessage }}</span>
-        </div>
                     </div>
                   </div>
                   <!--/.Panel 1-->
@@ -240,17 +298,15 @@
 
                     <button
                       class="btn btn-c btn-lg btn-block"
-                     
-                    
                       type="submit"
                       @click.prevent="validate"
                       :disabled="cardCheckSending"
                     >
                       <span v-if="cardCheckSending">
-            <i class="fa fa-btn fa-spinner fa-spin"></i>
-            Ordering...
-          </span>
-          <span v-else>Place Order</span>
+                        <i class="fa fa-btn fa-spinner fa-spin"></i>
+                        Ordering...
+                      </span>
+                      <span v-else>Place Order</span>
                     </button>
 
                     <h6 class="hr">OR</h6>
@@ -278,11 +334,48 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Footer from "@/components/Footer";
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "checkout",
-  data(){
+  data() {
+    return {
+      stripeKey: "pk_test_7joGoWp0YeNb2IEBQxc5cjn3000umtOlCQ",
 
+      firstName: "",
+      lastName: "",
+      phone: "",
+      engravingText: "",
+      address: {
+        street: "",
+        city: "",
+        state: "",
+        zip: ""
+      },
+
+      card:{
+        number:"",
+        cvc:"",
+        exp_month:"",
+        exp_year:""
+      },
+
+      cardNumberError:null,
+      cardCvcError:null,
+      cardMonthError:null,
+      cardYearError:null,
+
+      firstNameError:null,
+      lastNameError:null,
+      phoneError:null,
+      addressStreetError:null,
+      addressStateError:null,
+      addressCityError:null,
+      addressZipError:null,
+
+      cardCheckSending:false,
+      cardCheckError:false,
+      cardCheckErrorMessage:""
+    };
   },
   component: {
     Footer
@@ -295,6 +388,117 @@ export default {
     hasProduct() {
       return this.getProductsInCart.length > 0;
     },
+    clearCardErrors() {
+      this.cardNumberError = null;
+      this.cardCvcError = null;
+      this.cardMonthError = null;
+      this.cardYearError = null;
+      this.firstNameError=null,
+      this.lastNameError=null,
+      this.phoneError=null,
+      this.addressStreetError=null,
+      this.addressStateError=null,
+      this.addressCityError=null,
+      this.addressZipError=null
+    },
+    validate() {
+      this.clearCardErrors();
+      let valid = true;
+      if (!this.address.street) {
+        valid = false;
+        this.addressStreetError = "Street is Required";
+      }
+      if (!this.address.state) {
+        valid = false;
+        this.addressStateError = "State is Required";
+      }
+      if (!this.address.city) {
+        valid = false;
+        this.addressCityError = "City is Required";
+      }
+      if (!this.address.zip) {
+        valid = false;
+        this.addressZipError = "Zip Code is Required";
+      }
+      if (!this.firstName) {
+        valid = false;
+        this.firstNameError = "First Name is Required";
+      }
+      if (!this.lastName) {
+        valid = false;
+        this.lastNameError = "Last Name is Required";
+      }
+      if (!this.phone) {
+        valid = false;
+        this.phoneError = "Phone Number is Required";
+      }
+      if (!this.card.number) {
+        valid = false;
+        this.cardNumberError = "Card Number is Required";
+      }
+      if (!this.card.cvc) {
+        valid = false;
+        this.cardCvcError = "CVC is Required";
+      }
+      if (!this.card.exp_month) {
+        valid = false;
+        this.cardMonthError = "Month is Required";
+      }
+      if (!this.card.exp_year) {
+        valid = false;
+        this.cardYearError = "Year is Required";
+      }
+      if (valid) {
+        this.createToken();
+      }
+    },
+    createToken() {
+      this.cardCheckError = false;
+      window.Stripe.setPublishableKey(this.stripeKey);
+      window.Stripe.createToken(
+        this.card,
+        $.proxy(this.stripeResponseHandler, this)
+      );
+      this.cardCheckSending = true;
+    },
+    stripeResponseHandler(status, response) {
+      this.cardCheckSending = false;
+      if (response.error) {
+        this.cardCheckErrorMessage = response.error.message;
+        this.cardCheckError = true;
+
+        alert(response.error);
+      } else {
+        // this.tokenRetrieved = true;
+        // this.$emit('paymentEntered', response.id);
+
+        // token to create a charge on our server
+        alert('for is good')
+        var token_from_stripe = response.id;
+
+        var request = {
+          firstName: this.firstName,
+          lastName:this.lastName,
+          phone: this.phone,
+          engravingText: this.engravingText,
+          address: this.address,
+          card: this.card,
+          token_from_stripe: token_from_stripe
+        };
+
+        // Send to our server
+        axios.post(`localhost:8080/charge`, request).then(res => {
+          var error = res.data.error;
+          var charge = res.data.charge;
+          if (error) {
+           alert(error);
+          } else {
+            this.$router.push({ path: `order-success/${charge.id}` });
+          }
+        });
+      }
+    },
+  
     totalPrice() {
       let subtotal = 0;
 
@@ -328,17 +532,30 @@ export default {
     addCurrentProduct(product) {
       this.currentProduct(product);
     }
-  },
-
-  data() {
-    return {
-      data: []
-    };
   }
 };
 </script>
 
 <style scoped>
+
+.help{
+    color: red;
+  display: block;
+  margin: 4px 0 20px 0;
+  font-weight: 400;
+  font-size: 13px;
+  
+}
+.form-control:not([rows]) {
+  max-height: 50px;
+  min-height: 40px;
+
+}
+
+legend{
+  font-size:20px;
+  color:#444;
+}
 h6.hr {
   display: flex;
   align-items: center;

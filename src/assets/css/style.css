@@ -356,7 +356,7 @@ a:hover {
 /*------/ Overlay /------*/
 
 .overlay-a {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 27%, rgba(0, 0, 0, 0.65) 90%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 10%, rgba(0, 0, 0, 0.35) 20%, rgba(0, 0, 0, 0.35) 20%);
 }
 
 .overlay {
@@ -726,46 +726,18 @@ a:hover {
   opacity: 1;
   filter: alpha(opacity=1);
 }
-.help-block {
-  color: red;
-  font-size: 13px;
-}
+
 
 /*------/ Hamburger Navbar /------*/
-.StripeElement {
-  box-sizing: border-box;
-
-  height: 40px;
-
-  padding: 10px 12px;
-
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background-color: white;
-
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease;
-}
-
-.StripeElement--focus {
-  box-shadow: 0 1px 3px 0 #cfd7df;
-}
-
-.StripeElement--invalid {
-  border-color: #fa755a;
-}
-
-.StripeElement--webkit-autofill {
-  background-color: #fefde5 !important;
-}
+.
 
 
 /*======================================
 //--//-->   BOX COLAPSE
 ======================================*/
 
-======================================*/ .box-collapse {
+
+.box-collapse {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -785,7 +757,9 @@ a:hover {
   transition: all 1s ease;
   transition-delay: .3s;
 }
-
+legend{
+  font-size:20px
+}
 .box-collapse-wrap {
   opacity: 0;
   position: absolute;
@@ -940,10 +914,10 @@ a:hover {
 }
 
 .intro .intro-body .price-a {
-  color: #ffffff;
-  padding: 1rem 1.5rem;
-  border: 2px solid #EB782E;
-  border-radius: 100px;
+  color: #333;
+  padding: 1rem 1.3rem;
+  border: 3px solid #EB782E;
+  border-radius: 50px;
   text-transform: uppercase;
   letter-spacing: 0.050em;
   cursor: pointer;
@@ -951,7 +925,8 @@ a:hover {
 }
 
 .intro .intro-body .price-a:hover {
-  color: #eb782e;
+  color: #fff;
+  background-color: #eb782e
 }
 
 .span3:hover {
@@ -1514,7 +1489,7 @@ footer .credits {
   margin-bottom: 15px;
 }
 
-.form-a #errormessage {
+.form-a .errormessage {
   color: red;
   display: none;
   border: 1px solid red;
@@ -1560,6 +1535,7 @@ footer .credits {
 .form-a .form-control:focus {
   box-shadow: none;
   border-color: #2eca6a;
+  border:2px solid  #2eca6a;
 }
 
 /*======================================

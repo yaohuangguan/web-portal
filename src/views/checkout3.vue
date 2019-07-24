@@ -64,42 +64,7 @@
             </p>
                     <div class="col-md-8">
                      
-                     <div class="form-group">
-            <label class="form-label" for="Card Number">
-              Card Number
-            </label>
-            <div class="form-control mb-4">
-              <input id="card-number" class="form-input" :class="{ 'invalid-feedback': cardNumberError }">
-              <span class="help-block" v-if="cardNumberError">
-                                {{cardNumberError}}
-                            </span>
-            </div>
-          </div>
-
-          <div class="form-group">
-           
-              <label class="form-label mb-4" for="Card CVC">
-                Card CVC
-              </label>
-              <div class="form-control mb-4">
-                <input id="card-cvc" class="form-input" :class="{ 'invalid-feedback': cardCvcError }">
-                <span class="help-block" v-if="cardCvcError">
-                                    {{cardCvcError}}
-                                </span>
-              </div>
-          
-           
-              <label class="form-label" for="Expiry Month">
-                Expiry
-              </label>
-              <div class="form-control mb-4">
-                <input id="card-expiry" class="form-input" :class="{ 'invalid-feedback': cardExpiryError }">
-                <span class="help-block" v-if="cardExpiryError">
-                                    {{cardExpiryError}}
-                                </span>
-              </div>
-            
-          </div>
+                    
                     </div>
                     <br />
                     <br />

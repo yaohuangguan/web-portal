@@ -36,6 +36,11 @@ export default {
 
   .btn-info1 {
     background-color: #eb782e;
+    padding:2.1rem;
+    margin-right:-7px;
+  }
+  .btn-info1:hover{
+    background-color:#eb782e
   }
 
   .btn-sucess {

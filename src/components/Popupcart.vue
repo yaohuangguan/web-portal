@@ -4,6 +4,9 @@
     <li class="linkNavIN">
             <router-link to="/login" class="loginLink" @click.native="showPopupCart()"><span class="span3 price-a-a" >Login/SignUp</span></router-link>
           </li>
+          <li class="linkNavIN">
+            <router-link to="/login" class="loginLink" @click.native="showPopupCart()"><span class="span3 price-a-a" >Category</span></router-link>
+          </li>
    
     <div class="text-center" v-if="!hasProduct()">
       <div class="col-md">
