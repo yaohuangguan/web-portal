@@ -1,51 +1,102 @@
 <template>
-  <header class="header" @scroll="handlescroll">
-    <nav class="nav">
-      <ul class="nav-links">
-        <li class="linklogo">
-          <router-link to="/">
-            <span class="span2" id="change">
-              <i class="fas fa-cookie-bite"></i>COOKIE
-            <span style="color:#555">GOAT</span></span>
-          </router-link>
-        </li>
-       
-      </ul>
-    </nav>
-    <slot></slot>
-  </header>
+  <div>
+    <subheader />
+    <div @scroll="handlescroll">
+      <!-- <subnav></subnav> -->
+
+      <!-- <img :src="img" style="width:40px;height:40px" /> -->
+      <header class="header" id="backtotop">
+        <nav class="nav">
+          <ul class="nav-links">
+            <li class="linklogo">
+              <router-link to="/">
+                <span class="span2" id="change">Cookie</span>
+                <span class="span2" style="color:#555">Cannon</span>
+              </router-link>
+            </li>
+
+            <!-- <li class="linklogo dropdown">
+              <a>
+                <span class="span2" style="padding:3rem">cookie</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <router-link class="dropdown-item" to="/happybirthday">Happy Birthday</router-link>
+                </li>
+                <li>
+                  <router-link class="dropdown-item" to="/Lover">Lover's Day</router-link>
+                </li>
+                <li>
+                  <router-link class="dropdown-item" to="/kid">For Kids</router-link>
+                </li>
+                <li>
+                  <router-link class="dropdown-item" to="/corporate">Business</router-link>
+                </li>
+                <li>
+                  <router-link class="dropdown-item" to="/christmas">Merry Christmas</router-link>
+                </li>
+              </ul>
+            </li>
+            <li class="linklogo dropdown">
+              <a>
+                <span class="span2">cake</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <router-link class="dropdown-item" to="/happybirthday">Happy Birthday</router-link>
+                </li>
+                <li>
+                  <router-link class="dropdown-item" to="/Lover">Lover's Day</router-link>
+                </li>
+                <li>
+                  <router-link class="dropdown-item" to="/kid">For Kids</router-link>
+                </li>
+                <li>
+                  <router-link class="dropdown-item" to="/corporate">Business</router-link>
+                </li>
+                <li>
+                  <router-link class="dropdown-item" to="/christmas">Merry Christmas</router-link>
+                </li>
+              </ul>
+            </li> -->
+          </ul>
+        </nav>
+        <slot></slot>
+      </header>
+    </div>
+  </div>
 </template>
 
 <script>
+import subheader from "./homepage/subheader";
+import subnav from "./homepage/subnav";
 export default {
   data() {
-    return {};
+    return {
+      img: require("@/assets/img/cannon.png")
+    };
+  },
+  components: {
+    subheader,
+    subnav
   },
 
   methods: {
     handlescroll() {
       let header = document.querySelector(".header");
-      let changeText = document.getElementsByTagName("span");
 
       if (window.scrollY > 100 && !header.className.includes("soild")) {
         header.classList.add("soild");
-        changeText.classList.add("white");
       } else if (window.scrollY < 100) {
         header.classList.remove("soild");
-        changeText.classList.remove("white");
       }
     }
-
-    // if(this.limitposition > window.scrollY) {
-    //   this.scrolled = false;
-    // } else {
-    //   this.scrolled = true;
-    // }
   },
 
   created() {
     window.addEventListener("scroll", this.handlescroll);
   },
+
   destroyed() {
     window.removeEventListener("scroll", this.handlescroll);
   }
@@ -55,21 +106,18 @@ export default {
 <style>
 .header {
   width: 100%;
-  height: 70px;
+  height: 80px;
   background: rgba(255, 255, 255, 0);
   box-sizing: border-box;
-  padding: 0.5em;
+
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.5s ease-in-out;
 
-  padding-top: 8px;
-  padding-bottom: 6px;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 
-  overflow: hidden;
   position: fixed;
   z-index: 1000;
 }
@@ -91,7 +139,6 @@ export default {
 
 .linklogo {
   list-style: none;
-
   margin-top: 20px;
 }
 

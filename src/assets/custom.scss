@@ -1,5 +1,24 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/src/index.scss';
+.dropdown-menu{
+  background-color:#fff;
+  color:#eb782e;
+  display:none
+
+}
+.dropdown:hover .dropdown-menu {display: block;}
+.dropdown-menu a {
+  
+  color:#eb782e
+}
+
+
+.md-form input[type=text]{
+  border-bottom: 1px solid  rgba(61, 204, 89, 1);
+}
+.md-form input[type=text]::after{
+  border-bottom: 1px solid  rgba(61, 204, 89, 1);
+}
 
 ul#cookie-section__BV_tab_controls_ {
     border: none;

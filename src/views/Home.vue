@@ -1,6 +1,6 @@
 <template>
 
-<div>
+<div style="vertical-align: bottom">
 
   <carousel/>
    <Maincookie/>

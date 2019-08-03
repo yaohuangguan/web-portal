@@ -1,69 +1,25 @@
 <template>
-    <section class="section-news section-t8" id="cookie-section">
+    <section class="section-news section-t8" id="menu">
   
   <div class="container">
 
-          <br> <br> 
+       
    
 <div>
- 
-     <div class="container">
-       
-        <div class="title-single-box">
 
-              <h1 class="title-single" style="color:#444; font-size:30px" >Seasonal</h1>
+
+       
+        <div class="title-single-box text-center" >
+
+              <h1 class="title-single font-weight-bold" style="color:#444; font-size:30px;letter-spacing:3px" >Featured items</h1>
 
             </div>
 
-        <CookieList/>
+        <allList/>
      
     
-     </div>
-    
-   <br><br><br><br>
-     <div class="container">
-       
-        <div class="title-single-box">
-              <h1 class="title-single" style="color:#444;font-size:30px">Corporate Logo</h1>
-             
-            </div>
-        
-      <CakeList/>
-     </div>
 
-<br><br><br><br>
-     <div class="container">
-       
-        <div class="title-single-box">
-              <h1 class="title-single" style="color:#444;font-size:30px">For Kids</h1>
-             
-            </div>
-        
-      <CakeList/>
-     </div>
-
-<br><br><br><br>
-     <div class="container">
-       
-        <div class="title-single-box">
-              <h1 class="title-single" style="color:#444;font-size:30px">Cultural</h1>
-             
-            </div>
-        
-      <CakeList/>
-     </div>
-
-<br><br><br><br>
-     <div class="container">
-       
-        <div class="title-single-box">
-              <h1 class="title-single" style="color:#444;font-size:30px">Celebration</h1>
-             
-            </div>
-        
-      <CakeList/>
-     </div>
-
+  
   
 </div>
     
@@ -78,14 +34,14 @@
 
 
 import CookieList from '@/components/CookieList'
-import CakeList from '@/components/CakeList'
+import allList from '@/components/allList'
 import { mapGetters } from 'vuex';
 
 export default {
     name:"Main-cookie",
     components:{
      
-     CakeList,
+     allList,
       CookieList
     },
      computed: {

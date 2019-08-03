@@ -1,492 +1,55 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import api from "./services/api";
+import router from "./router";
+
+Vue.use(Vuex);
+
 let cartProducts = window.localStorage.getItem("cartProducts");
 let cartCount = window.localStorage.getItem("cartCount");
-Vue.use(Vuex);
-// import axios from 'axios'
+let currentProduct = window.localStorage.getItem("currentProduct");
 
 function saveCart(cartProducts, cartCount) {
   window.localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   window.localStorage.setItem("cartCount", cartCount);
 }
+function saveCurrent(currentProduct) {
+  window.localStorage.setItem("currentProduct", JSON.stringify(currentProduct));
+}
+
+console.log(cartProducts);
+console.log(cartCount);
 const store = new Vuex.Store({
   state: {
     cartProducts: cartProducts ? JSON.parse(cartProducts) : [],
-
     cartCount: cartCount ? parseInt(cartCount) : 0,
-      // cartProducts:[],
-      // cartCount:0,
-    birthdayCake: [
-      {
-        id: 1,
-        name: "Birthday",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        totalReviews: 230,
-        details:
-          "This cookie is the new york theme, liberty statue is on the cookie.",
-        tag: "cake",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 2,
-        name: "Birthday",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        totalReviews: 230,
-        details:
-          "This cookie is the new york theme, liberty statue is on the cookie.",
-        tag: "cake",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 3,
-        name: "Birthday",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        totalReviews: 230,
-        details:
-          "This cookie is the new york theme, liberty statue is on the cookie.",
-        tag: "cake",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 4,
-        name: "Birthday",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        totalReviews: 230,
-        details:
-          "This cookie is the new york theme, liberty statue is on the cookie.",
-        tag: "cake",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      }
-    ],
-
-    cityCake: [
-      {
-        id: 5,
-        name: "I love New York",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cake",
-        totalReviews: 1,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 6,
-        name: "I love New York",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cake",
-        totalReviews: 1,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 7,
-        name: "I love New York",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cake",
-        totalReviews: 1,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 8,
-        name: "I love New York",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cake",
-        totalReviews: 1,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      }
-    ],
-    chrismasCake: [
-      {
-        id: 9,
-        name: "Merry Chrismas",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cake",
-        totalReviews: 1,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 10,
-        name: "Merry Chrismas",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cake",
-        totalReviews: 1,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 11,
-        name: "Merry Chrismas",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cake",
-        totalReviews: 1,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 12,
-        name: "Merry Chrismas",
-        price: 29,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cake",
-        totalReviews: 1,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      }
-    ],
-
-    city: [
-      {
-        id: 13,
-        name: "Liberty Statue",
-        price: Math.round(3 * 0.8),
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-
-        tag: "cookie 20% OFF",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 14,
-        name: "Eiffel Tower",
-        price: Math.round(3 * 0.8),
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie 20% OFF",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 15,
-        name: "Golden State",
-        price: Math.round(3 * 0.8),
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie 20% OFF",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 16,
-        name: "Emperor Building",
-        price: Math.round(3 * 0.8),
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie 20% OFF",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 17,
-        name: "Water fall",
-        price: Math.round(3 * 0.8),
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie 20% OFF",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 18,
-        name: "Skydiving",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 19,
-        name: "Neuschwanstein Castle",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 20,
-        name: "Louvre",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      }
-    ],
-    birthday: [
-      {
-        id: 21,
-        name: "Happy Birthday",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 22,
-        name: "Happy Birthday",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 23,
-        name: "Happy Birthday",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 24,
-        name: "Happy Birthday",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      }
-    ],
-    chrismas: [
-      {
-        id: 25,
-        name: "Chrismas",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 26,
-        name: "Chrismas",
-        price: 3,
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 27,
-        name: "Chrismas ",
-        price: Math.round(3 * 0.9),
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie 10% OFF",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      },
-      {
-        id: 28,
-        name: "Chrismas ",
-        price: Math.round(3 * 0.9),
-        image: require("@/assets/img/cookie1.jpg"),
-        count: 1,
-        tag: "cookie 10% OFF",
-        totalReviews: 0,
-        details:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s",
-        message: "",
-        flavor: "",
-        size: "",
-        shape: "",
-        color: ""
-      }
-    ],
-
-    currentProduct: {},
-    // loading:true,
+    status: "",
+    access_token: localStorage.getItem("access_token") || "",
+    refresh_token: localStorage.getItem("refresh_token") || "",
+    user: {},
+    currentProduct: currentProduct ? currentProduct : {},
     showPopupCart: false
   },
   mutations: {
+    auth_request(state) {
+      state.status = "loading";
+    },
+    auth_success(state, access_token, user) {
+      state.status = "success";
+      state.access_token = access_token;
+      state.user = user;
+    },
+    auth_error(state) {
+      state.status = "error";
+    },
+    logout(state) {
+      state.status = "";
+      state.access_token = "";
+      state.refresh_token = "";
+    },
+
     ADD_PRODUCT: (state, product) => {
-      let found = state.cartProducts.find((item) => {
+      let found = state.cartProducts.find(item => {
         return item.id === product.id && item.message === product.message;
       });
 
@@ -513,14 +76,10 @@ const store = new Vuex.Store({
 
     removeAll: state => {
       state.cartProducts.splice(0);
+      state.cartCount = 0;
 
       saveCart(state.cartProducts, state.cartCount);
     },
-    // changeCount: (state,product,value) =>{
-    //     this.state.newCount = value;
-    //     Vue.set(product,'count',product.newCount)
-
-    // },
 
     removeFromCart: (state, product) => {
       let index = state.cartProducts.indexOf(product);
@@ -531,26 +90,22 @@ const store = new Vuex.Store({
       } else {
         state.cartProducts.splice(index, 1);
       }
-      // const fadeOutLeft = document.getElementById('animatedRow');
-
-      // fadeOutLeft.classList.add('animated','fadeOutLeft')
-      // fadeOutLeft.addEventListener('animationend', function() { fadeOutLeft.classList.remove('animated','fadeOutLeft') })
 
       state.cartCount--;
 
       saveCart(state.cartProducts, state.cartCount);
     },
-    clearProduct(state){
-     state.cartProduct = [];
-       state.cartCount = 0
+    clearProduct(state) {
+      state.cartProduct = [];
+      state.cartCount = 0;
     },
 
     updateMessage(state, message) {
       state.currentProduct.message = message;
       saveCart(state.cartProducts, state.cartCount);
     },
-    updateFlavor(state, flavor) {
-      state.currentProduct.flavor = flavor;
+    updateMsgcolor(state, message_color) {
+      state.currentProduct.message_color = message_color;
       saveCart(state.cartProducts, state.cartCount);
     },
     updateSize(state, size) {
@@ -561,35 +116,23 @@ const store = new Vuex.Store({
       state.currentProduct.shape = shape;
       saveCart(state.cartProducts, state.cartCount);
     },
-    updateColor(state, color) {
-      state.currentProduct.color = color;
+    updateColor(state, base_color) {
+      state.currentProduct.base_color = base_color;
       saveCart(state.cartProducts, state.cartCount);
     },
     CURRENT_PRODUCT: (state, product) => {
       state.currentProduct = product;
+      saveCurrent(state.currentProduct);
     },
 
     SHOW_POPUP_CART: state => {
       state.showPopupCart = !state.showPopupCart;
     }
-    // getProduct:(state,cartProducts) => {
-    //   state.cartProducts = cartProducts
-    // },
-    // changeLoadingState(state, loading) {
-    //   state.loading = loading
-    // },
   },
   actions: {
     addProduct: (context, product) => {
       context.commit("ADD_PRODUCT", product);
     },
-    // getProduct ({commit}) {
-    //   axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`).
-    //   then(r => r.data)
-    //     .then(cartProducts => {
-    //     commit('getProduct', cartProducts)
-    //     })
-    // },
 
     currentProduct: (context, product) => {
       context.commit("CURRENT_PRODUCT", product);
@@ -597,22 +140,152 @@ const store = new Vuex.Store({
 
     showOrHiddenPopupCart: context => {
       context.commit("SHOW_POPUP_CART");
+    },
+
+    sendCart({ commit }, {cart, request}) {
+      return new Promise((resolve, reject) => {
+        api
+          .post(`/order/checkout/${id}/`, {cart, request})
+          .then(res => {
+            console.log(res);
+            resolve(res);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    },
+    addCart({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        api
+          .post(`/order/item/create/`, data)
+          .then(res => {
+            console.log(res);
+
+            resolve(res);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    },
+    login({ commit }, user) {
+      return new Promise((resolve, reject) => {
+        commit("auth_request");
+        api({ url: "/api/token/", data: user, method: "POST" })
+          .then(res => {
+            const access_token = res.data.access;
+            const refresh_token = res.data.refresh;
+            const user = res.data;
+            console.log(res.data.access);
+            console.log("refresh token: ", res.data.refresh);
+            console.log(res);
+            localStorage.setItem("access_token", access_token);
+            localStorage.setItem("refresh_token", refresh_token);
+            api.defaults.headers.common["Authorization"] = access_token;
+            commit("auth_success", access_token, user);
+            resolve(res);
+          })
+          .catch(err => {
+            commit("auth_error", err);
+
+            localStorage.removeItem("access_token");
+            reject(err);
+          });
+      });
+    },
+    register({ commit }, user) {
+      return new Promise((resolve, reject) => {
+        commit("auth_request");
+        api({ url: "/users/signup/", data: user, method: "POST" })
+          .then(res => {
+            const token = res.data.access;
+            const user = res.data;
+            console.log(token);
+            localStorage.setItem("token", token);
+
+            api.defaults.headers.common["Authorization"] = token;
+            commit("auth_success", token, user);
+            resolve(res);
+          })
+          .catch(err => {
+            commit("auth_error", err);
+            alert(err);
+            localStorage.removeItem("token");
+            reject(err);
+          });
+      });
+    },
+    inquire({ commit }, info) {
+      console.log(info);
+      return new Promise((resolve, reject) => {
+        api
+          .post("/users/vendor/application/", info)
+          .then(res => {
+            console.log(res);
+            resolve(res);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    },
+    pswReset({ commit }, username) {
+      return new Promise((resolve, reject) => {
+        api
+          .post("/users/password-reset/", username)
+          .then(res => {
+            console.log(res);
+            resolve(res);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    },
+
+    requestRefresh({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        api
+          .post("/api/token/refresh", data)
+          .then(res => {
+            this.isRefreshing = false;
+
+            const refresh_token = res.data.refresh;
+            const access_token = res.data.access;
+            window.localStorage.setItem("refresh_token", refresh_token);
+            window.localStorage.setItem("access_token", res.data.access);
+            commit("auth_success", access_token);
+            console.log("new token", access_token);
+            resolve(res);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    },
+    logout({ commit }) {
+      return new Promise((resolve, reject) => {
+        commit("logout");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        delete api.defaults.headers.common["Authorization"];
+        resolve();
+      });
     }
   },
   getters: {
-    getBirthdayCake: state => state.birthdayCake,
-    getChrismasCake: state => state.chrismasCake,
-    getCityCake: state => state.cityCake,
-    getCity: state => state.city,
-    getBirthday: state => state.birthday,
-    getChrismas: state => state.chrismas,
-    getAllCake: state =>
-      state.birthdayCake.concat(state.chrismasCake, state.cityCake),
-    getAllCookie: state => state.city.concat(state.birthday, state.chrismas),
     getProductsInCart: state => state.cartProducts,
     getCurrentProduct: state => state.currentProduct,
     getPopupCart: state => state.showPopupCart,
-    getMessage: state => state.cartProducts.message
+    getMessage: state => state.cartProducts.message,
+    isLoggedIn: state => state.access_token,
+    authStatus: state => state.status
   }
 });
 

@@ -176,7 +176,7 @@
         let subtotal = 0;
 
         for (let product of this.$store.state.cartProducts) {
-          subtotal += product.totalPrice;
+          subtotal += parseFloat(product.totalPrice);
 
         }
 
@@ -186,7 +186,7 @@
         let taxRate = 0.075;
         let tax = 0;
         for (let product of this.$store.state.cartProducts) {
-          tax = product.totalPrice * taxRate;
+          tax = parseFloat(product.totalPrice) * taxRate;
         }
         return tax.toFixed(2);
       },
@@ -195,7 +195,7 @@
         let subtotal = 0;
         let total = 0;
         for (let product of this.$store.state.cartProducts) {
-          subtotal += product.totalPrice;
+          subtotal += parseFloat(product.totalPrice);
           total = subtotal + (subtotal * taxRate);
         }
         return total.toFixed(2);

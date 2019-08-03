@@ -1,32 +1,22 @@
 <template>
 
-<div>
+<div class="container">
 
  <div class="title-link">
       <router-link to="/cake-menu"><strong>View All</strong>
       <span class="ion-ios-arrow-forward"></span>
       </router-link>
       </div>
-  <b-tabs
-      active-nav-item-class=" pills font-weight-bold text-uppercase text-white"
-      active-tab-class="font-weight-bold text-success"
-      content-class="mt-3" align="center" class="nav-pills"
-    >
+ 
 
-    <b-tab title="City View" active>
-      <allList :products="getCityCake"/>
     
-    </b-tab>
+     
+  
+  
+    <allList/>
+  
+  
 
-    <b-tab title="Happy Birthday">
-    <allList :products="getBirthdayCake"/>
-    </b-tab>
-  
-    <b-tab title="Merry Chrismas">
-    <allList :products="getChrismasCake"/>
-    </b-tab>
-  
-  </b-tabs>
 </div>
 </template>
 

@@ -1,6 +1,8 @@
-body {
+body head{
   font-family: 'Poppins', sans-serif;
   color: #555555;
+
+  min-height:100%;margin:0;padding:0;position:relative;
 }
 
 h1,
@@ -83,6 +85,9 @@ a:hover {
 
 .color-b {
   color: #EB782E;
+}
+.color-g{
+  color:rgba(61, 204, 89, 1);
 }
 
 .color-d {
@@ -179,6 +184,33 @@ a:hover {
 .zoomOut {
   -webkit-animation-name: zoomOut;
   animation-name: zoomOut;
+}
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 40px;
+  width: 100%;
+  padding: 10px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
 }
 
 /*------/ List a /------*/
@@ -372,7 +404,7 @@ a:hover {
 
 .owl-theme .owl-dots {
   text-align: center;
-  margin-top: 18px;
+  
 }
 
 .owl-theme .owl-dots .owl-dot {
@@ -498,7 +530,7 @@ a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 9999;
+  z-index: 999;
   overflow: hidden;
   background: #fff;
 }
@@ -823,14 +855,12 @@ legend{
   width: 100%;
   height: 100%;
   visibility: hidden;
-  z-index: 1035;
   background-color: #000000;
   opacity: .4;
 }
 
 .close-box-collapse {
   position: absolute;
-  z-index: 1050;
   top: 2rem;
   font-size: 3.5rem;
   line-height: 1;
@@ -914,9 +944,10 @@ legend{
 }
 
 .intro .intro-body .price-a {
-  color: #333;
+  color: #fff;
   padding: 1rem 1.3rem;
   border: 3px solid #EB782E;
+  background-color: #eb782e;
   border-radius: 50px;
   text-transform: uppercase;
   letter-spacing: 0.050em;
@@ -948,7 +979,6 @@ legend{
   color: #ffffff;
   font-weight: 700;
   font-size: 2.8rem;
-  text-transform: uppercase;
 }
 
 .intro .intro-subtitle {
@@ -1587,6 +1617,26 @@ footer .credits {
 .btn-b-b {
   width: 100%;
 }
+.buttonBlock{
+  
+  max-width: 80px;
+  max-height: 100px;
+  width:100%;
+  height:100%;
+ 
+}
+
+
+.btn-x{
+  background-color: #eb782e;
+  color:#333;
+  display: block;
+  border: 1px solid transparent;
+ width: 100%;
+ height: 100%;
+
+  
+}
 
 .btn.btn-a,
 .btn.btn-b,
@@ -1642,6 +1692,7 @@ footer .credits {
   .intro .intro-title {
     font-size: 3.5rem;
   }
+  
 
   .intro .intro-subtitle.intro-price {
     font-size: 1.3rem;
@@ -1674,6 +1725,10 @@ footer .credits {
     float: left;
     display: block;
 
+  }
+  .btn-x{
+    align-items: center;
+    justify-content: center
   }
 
   .linkNav {
@@ -1709,19 +1764,8 @@ footer .credits {
     color: #EB782E;
   }
 
-  .btn-circle {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #fff;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  
+  
 
 }
 
@@ -1729,6 +1773,7 @@ footer .credits {
   .link-a {
     font-size: .9rem;
   }
+  
 
   .link-a span {
     font-size: 1.5rem;
@@ -1877,6 +1922,7 @@ footer .credits {
   .card-box-a:hover .card-overlay-a-content {
     bottom: 60px;
   }
+  
 }
 
 @media (min-width: 768px) and (min-width: 992px) {
@@ -1891,7 +1937,7 @@ footer .credits {
     font-size: 1rem;
   }
 
-
+ 
   .link-a span {
     font-size: 18px;
   }

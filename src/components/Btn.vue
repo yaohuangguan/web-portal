@@ -35,12 +35,13 @@ export default {
   }
 
   .btn-info1 {
-    background-color: #eb782e;
-    padding:2.1rem;
-    margin-right:-7px;
+    background-color: rgba(61, 204, 89, 1);;
+    padding:1.8rem;
+    margin-right:-10px;
+    margin-top:-3px;
   }
   .btn-info1:hover{
-    background-color:#eb782e
+    background-color:rgba(61, 204, 89, 1);
   }
 
   .btn-sucess {

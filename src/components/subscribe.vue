@@ -12,11 +12,6 @@
         <!-- Form -->
         <form class="text-center" style="color: #757575;">
 
-            <p>Join our mailing list. We write rarely, but only the best content.</p>
-
-            <p>
-                <a href="" target="_blank">See the last newsletter</a>
-            </p>
 
             <!-- Name -->
             <div class="md-form mt-3">

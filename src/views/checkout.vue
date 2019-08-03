@@ -8,7 +8,13 @@
       <br />
       <div>
         <div class="card-body">
-          <form class="form-a" action="/charge" method="post">
+          <form
+            class="form-a"
+            @submit.prevent="sendCart"
+            action="/charge"
+            method="post"
+            id="payment-form"
+          >
             <!--Grid row-->
             <div class="row">
               <!--Grid column-->
@@ -39,7 +45,7 @@
                         <input
                           type="text"
                           id="firstName"
-                         :class="['is-danger' ? firstNameError : '', 'form-control']"
+                          :class="['is-danger' ? firstNameError : '', 'form-control']"
                           placeholder="First Name"
                           v-model="firstName"
                           required
@@ -56,7 +62,9 @@
                         <input
                           type="text"
                           id="lastName"
-                         :class="['is-danger' ? lastNameError : '', 'form-control']"
+                          v-validate="'alpha'"
+                          name="alpha_field"
+                          :class="['is-danger' ? lastNameError : '', 'form-control']"
                           placeholder="Last Name"
                           v-model="lastName"
                         />
@@ -66,18 +74,17 @@
                     </div>
                     <!--Grid row-->
 
-                     <fieldset>
-                    <legend for="address" class>Address</legend>
-                    <input
-                      type="text"
-
-                       :class="['is-danger' ? addressStreetError : '', 'form-control mb-2']"
-                      placeholder="1234 Main St"
-                      v-model="address.street"
-                      required
-                    />
-                    <div class="help is-danger" v-show="addressStreetError">{{addressStreetError}}</div>
-                     </fieldset>
+                    <fieldset>
+                      <legend for="address" class>Address</legend>
+                      <input
+                        type="text"
+                        :class="['is-danger' ? StreetError : '', 'form-control mb-2']"
+                        placeholder="1234 Main St"
+                        v-model="street"
+                        required
+                      />
+                      <div class="help is-danger" v-show="StreetError">{{StreetError}}</div>
+                    </fieldset>
 
                     <fieldset class="has-icons-left has-icons-right">
                       <legend>Cellphone</legend>
@@ -92,22 +99,76 @@
                       <div class="help is-danger" v-show="phoneError">{{phoneError}}</div>
                     </fieldset>
 
-                   
-                    
-
                     <!--Grid row-->
                     <div class="row">
                       <!--Grid column-->
                       <fieldset class="col-lg-4 col-md-12 mb-4">
                         <legend>State</legend>
-                        <input
-                          :class="['is-danger' ? addressStateError : '', 'form-control d-block w-100']"
-                          v-model="address.state"
-                          placeholder="OH"
+                        <select
+                          :class="['is-danger' ? StateError : '', 'form-control d-block w-100']"
+                          v-model="state"
                           required
-                        />
+                        >
+                          <option value="AL">Alabama</option>
+                          <option value="AK">Alaska</option>
+                          <option value="AS">American Samoa</option>
+                          <option value="AZ">Arizona</option>
+                          <option value="AR">Arkansas</option>
+                          <option value="CA">California</option>
+                          <option value="CO">Colorado</option>
+                          <option value="CT">Connecticut</option>
+                          <option value="DE">Delaware</option>
+                          <option value="DC">Dist of Columbia</option>
+                          <option value="FL">Florida</option>
+                          <option value="GA">Georgia</option>
+                          <option value="GU">Guam</option>
+                          <option value="HI">Hawaii</option>
+                          <option value="ID">Idaho</option>
+                          <option value="IL">Illinois</option>
+                          <option value="IN">Indiana</option>
+                          <option value="IA">Iowa</option>
+                          <option value="KS">Kansas</option>
+                          <option value="KY">Kentucky</option>
+                          <option value="LA">Louisiana</option>
+                          <option value="ME">Maine</option>
+                          <option value="MD">Maryland</option>
+                          <option value="MA">Massachusetts</option>
+                          <option value="MI">Michigan</option>
+                          <option value="MN">Minnesota</option>
+                          <option value="UM">Minor Outlying Islands</option>
+                          <option value="MS">Mississippi</option>
+                          <option value="MO">Missouri</option>
+                          <option value="MT">Montana</option>
+                          <option value="NE">Nebraska</option>
+                          <option value="NV">Nevada</option>
+                          <option value="NH">New Hampshire</option>
+                          <option value="NJ">New Jersey</option>
+                          <option value="NM">New Mexico</option>
+                          <option value="NY">New York</option>
+                          <option value="NC">North Carolina</option>
+                          <option value="ND">North Dakota</option>
+                          <option value="MP">Northern Mariana Islands</option>
+                          <option value="OH">Ohio</option>
+                          <option value="OK">Oklahoma</option>
+                          <option value="OR">Oregon</option>
+                          <option value="PA">Pennsylvania</option>
+                          <option value="PR">Puerto Rico</option>
+                          <option value="RI">Rhode Island</option>
+                          <option value="SC">South Carolina</option>
+                          <option value="SD">South Dakota</option>
+                          <option value="TN">Tennessee</option>
+                          <option value="TX">Texas</option>
+                          <option value="UT">Utah</option>
+                          <option value="VT">Vermont</option>
+                          <option value="VA">Virginia</option>
+                          <option value="VI">U.S. Virgin Islands</option>
+                          <option value="WA">Washington</option>
+                          <option value="WV">West Virginia</option>
+                          <option value="WI">Wisconsin</option>
+                          <option value="WY">Wyoming</option>
+                        </select>
 
-                        <div class="help is-danger" v-show="addressStateError">{{addressStateError}}</div>
+                        <div class="help is-danger" v-show="StateError">{{StateError}}</div>
                       </fieldset>
                       <!--Grid column-->
 
@@ -115,15 +176,14 @@
                       <fieldset class="col-lg-4 col-md-6 mb-4">
                         <legend>City</legend>
                         <input
-                         
-                          :class="['is-danger' ? addressCityError : '', 'form-control d-block w-100']"
+                          :class="['is-danger' ? CityError : '', 'form-control d-block w-100']"
                           type="text"
-                          v-model="address.city"
+                          v-model="city"
                           placeholder="Columbus"
                           required
                         />
 
-                        <div class="help is-danger" v-show="addressCityError">{{addressCityError}}</div>
+                        <div class="help is-danger" v-show="CityError">{{CityError}}</div>
                       </fieldset>
                       <!--Grid column-->
 
@@ -132,24 +192,25 @@
                         <legend>Zip</legend>
                         <input
                           type="text"
-                          :class="['is-danger' ? addressZipError : '', 'form-control']"
+                          :class="['is-danger' ? ZipError : '', 'form-control']"
                           placeholder="90000"
-                          v-model="address.zip"
+                          v-model="zip"
                           required
                         />
-                        <div class="help is-danger" v-show="addressZipError">{{addressZipError}}</div>
+                        <div class="help is-danger" v-show="ZipError">{{ZipError}}</div>
                       </fieldset>
-                     
-                        <fieldset class="col-lg-6 col-md-6 mb-4">
-                          <legend style="font-size:20px">Special Note</legend>
-                          <textarea
-                            class="form-control"
-                            placeholder="What would you like the note to say?" cols="45"
-                  rows="4"
-                            v-model="engravingText"
-                          ></textarea>
-                        </fieldset>
-                    
+
+                      <fieldset class="col-lg-6 col-md-6 mb-4">
+                        <legend style="font-size:20px">Special Instruction</legend>
+                        <textarea
+                          class="form-control"
+                          placeholder="I am allergic to peanut, etc..."
+                          cols="45"
+                          rows="4"
+                          v-model="engravingText"
+                        ></textarea>
+                      </fieldset>
+
                       <!--Grid column-->
                     </div>
                     <hr />
@@ -162,17 +223,6 @@
                       </p>
                     </div>
                     <div class="d-block my-3">
-                      <div class="mb-2">
-                        <a>
-                          <img
-                            src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png"
-                            alt="Check out with PayPal"
-                          />
-                        </a>
-                      </div>
-                      <div class="col-md-4 text-center">
-                        <h6 class="hr">OR</h6>
-                      </div>
                       <div class="mb-2">
                         <input
                           name="group2"
@@ -193,56 +243,11 @@
                     </div>
 
                     <div class="row">
-                      <fieldset class="col-md-6 mb-4">
-                        <!--firstName-->
-                        <legend for="card_number" class>Card Number</legend>
-                        <input
-                          type="text"
-                          id="card_number"
-                          v-model="card.number"
-                          :class="['is-danger' ? cardNumberError : '', 'form-control']"
-                        />
-                        <span class="help is-danger" v-show="cardNumberError">{{ cardNumberError }}</span>
-                      </fieldset>
-
-                      <fieldset class="col-md-6 mb-4">
-                        <!--firstName-->
-                        <legend for="cvc">CVC</legend>
-                        <input
-                          type="text"
-                          id="cvc"
-                          v-model="card.cvc"
-                         :class="['is-danger' ? cardCvcError : '', 'form-control']"
-                          placeholder="123"
-                        />
-                        <span class="help is-danger" v-show="cardCvcError">{{ cardCvcError }}</span>
-                      </fieldset>
-                      <fieldset class="col-md-6 mb-4">
-                        <!--firstName-->
-                        <legend for="exp_month">Expiration Month</legend>
-                        <input
-                          type="text"
-                          id="exp_month"
-                          v-model="card.exp_month"
-                          :class="['is-danger' ? cardMonthError : '', 'form-control']"
-                          placeholder="MM"
-                        />
-                        <span class="help is-danger" v-show="cardMonthError">{{ cardMonthError }}</span>
-                      </fieldset>
-                      <fieldset class="col-md-6 mb-4">
-                        <!--firstName-->
-                        <legend for="exp_year">Expiration year</legend>
-                        <input
-                          type="text"
-                          id="exp_year"
-                          v-model="card.exp_year"
-                          :class="['is-danger' ? cardYearError : '', 'form-control ']"
-                          placeholder="YY"
-                        />
-                        <span class="help is-danger" v-show="cardYearError">{{ cardYearError }}</span>
-                      </fieldset>
-                      <div class="help is-danger" v-if="cardCheckError">
-                        <span style="color:red">{{ cardCheckErrorMessage }}</span>
+                      <div class="col-md-6">
+                        <div id="card-element">
+                          <!-- A Stripe Element will be inserted here. -->
+                        </div>
+                        <div id="card-errors" role="alert"></div>
                       </div>
                     </div>
                   </div>
@@ -256,6 +261,24 @@
               <div class="col-lg-4 mb-4">
                 <!--Card-->
                 <div class="card">
+                  <div class="card-body text-center" v-if="!hasProduct()">
+                    <div class="col-md">
+                      <img
+                        :src="cart"
+                        width="100px"
+                        height="100px"
+                        alt="SHOPPING CART MADE BY SMASHICON"
+                      />
+                    </div>
+                    <span style="font-size:25px;color:orange">Your Cart Is Empty.</span>
+                    <br />
+                    <span class="text-muted">No Product In Your Cart.</span>
+                    <br />
+                    <br />
+                    <br />
+
+                    <br />
+                  </div>
                   <!--Card content-->
                   <div class="card-body" v-if="hasProduct()">
                     <h4 class="mb-4 mt-1 h5 text-center font-weight-bold">Summary</h4>
@@ -264,7 +287,7 @@
                       <hr />
 
                       <dl class="row">
-                        <dd class="col-sm-8">{{product.name}}--{{product.tag}}</dd>
+                        <dd class="col-sm-8">{{product.name}}-{{product.tag}}</dd>
                         <dd class="col-sm-4">
                           {{product.price}}$
                           <strong>X {{product.count}}</strong>
@@ -273,13 +296,6 @@
                     </div>
 
                     <hr />
-                    <label for="promo" class>Promotion</label>
-                    <input
-                      type="text"
-                      id="promo"
-                      class="form-control mb-4"
-                      placeholder="Promo Code"
-                    />
 
                     <h6>
                       Subtotal:
@@ -308,12 +324,6 @@
                       </span>
                       <span v-else>Place Order</span>
                     </button>
-
-                    <h6 class="hr">OR</h6>
-                    <button class="btn btn-a btn-lg btn-block" type="submit">
-                      <i class="fab fa-apple"></i>Pay
-                    </button>
-                    <hr />
                   </div>
                 </div>
 
@@ -334,51 +344,113 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Footer from "@/components/Footer";
-import axios from "axios";
+import {
+  required,
+  sameAs,
+  minLength,
+  alpha,
+  alphaNum,
+  numeric
+} from "vuelidate/lib/validators";
+
 export default {
   name: "checkout",
   data() {
     return {
-      stripeKey: "pk_test_7joGoWp0YeNb2IEBQxc5cjn3000umtOlCQ",
-
       firstName: "",
       lastName: "",
       phone: "",
       engravingText: "",
-      address: {
+      
         street: "",
         city: "",
         state: "",
-        zip: ""
-      },
+        zip: "",
+      
 
-      card:{
-        number:"",
-        cvc:"",
-        exp_month:"",
-        exp_year:""
-      },
+      
 
-      cardNumberError:null,
-      cardCvcError:null,
-      cardMonthError:null,
-      cardYearError:null,
+      firstNameError: null,
+      lastNameError: null,
+      phoneError: null,
+      StreetError: null,
+     StateError: null,
+     CityError: null,
+     ZipError: null,
 
-      firstNameError:null,
-      lastNameError:null,
-      phoneError:null,
-      addressStreetError:null,
-      addressStateError:null,
-      addressCityError:null,
-      addressZipError:null,
+      cardCheckSending: false,
 
-      cardCheckSending:false,
-      cardCheckError:false,
-      cardCheckErrorMessage:""
+      cart: require("@/assets/img/bag.png")
     };
   },
+  validations: {
+    firstName: {
+      required,
+      alpha
+    }
+  },
+
   component: {
     Footer
+  },
+  mounted() {
+    var stripe = Stripe("pk_test_7joGoWp0YeNb2IEBQxc5cjn3000umtOlCQ");
+    var elements = stripe.elements();
+    var style = {
+      base: {
+        color: "#32325d",
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#aab7c4"
+        }
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a"
+      }
+    };
+    var card = elements.create("card", { style: style });
+    card.mount("#card-element");
+    card.addEventListener("change", function(event) {
+      var displayError = document.getElementById("card-errors");
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = "";
+      }
+    });
+
+    var form = document.getElementById("payment-form");
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the user if there was an error.
+          var errorElement = document.getElementById("card-errors");
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+
+    // Submit the form with the token ID.
+    function stripeTokenHandler(token) {
+      // Insert the token ID into the form so it gets submitted to the server
+      var form = document.getElementById("payment-form");
+      var hiddenInput = document.createElement("input");
+      hiddenInput.setAttribute("type", "hidden");
+      hiddenInput.setAttribute("name", "stripeToken");
+      hiddenInput.setAttribute("value", token.id);
+      form.appendChild(hiddenInput);
+
+      // Submit the form
+      form.submit();
+    }
   },
   computed: {
     ...mapGetters(["getProductsInCart"])
@@ -389,36 +461,32 @@ export default {
       return this.getProductsInCart.length > 0;
     },
     clearCardErrors() {
-      this.cardNumberError = null;
-      this.cardCvcError = null;
-      this.cardMonthError = null;
-      this.cardYearError = null;
-      this.firstNameError=null,
-      this.lastNameError=null,
-      this.phoneError=null,
-      this.addressStreetError=null,
-      this.addressStateError=null,
-      this.addressCityError=null,
-      this.addressZipError=null
+      this.firstNameError = null;
+      this.lastNameError = null;
+      this.phoneError = null;
+      this.StreetError = null;
+      this.StateError = null;
+      this.CityError = null;
+      this.ZipError = null;
     },
     validate() {
       this.clearCardErrors();
       let valid = true;
-      if (!this.address.street) {
+      if (!this.street) {
         valid = false;
-        this.addressStreetError = "Street is Required";
+        this.StreetError = "Street is Required";
       }
-      if (!this.address.state) {
+      if (!this.state) {
         valid = false;
-        this.addressStateError = "State is Required";
+        this.StateError = "State is Required";
       }
-      if (!this.address.city) {
+      if (!this.city) {
         valid = false;
-        this.addressCityError = "City is Required";
+        this.CityError = "City is Required";
       }
-      if (!this.address.zip) {
+      if (!this.zip) {
         valid = false;
-        this.addressZipError = "Zip Code is Required";
+        this.ZipError = "Zip Code is Required";
       }
       if (!this.firstName) {
         valid = false;
@@ -432,78 +500,35 @@ export default {
         valid = false;
         this.phoneError = "Phone Number is Required";
       }
-      if (!this.card.number) {
-        valid = false;
-        this.cardNumberError = "Card Number is Required";
-      }
-      if (!this.card.cvc) {
-        valid = false;
-        this.cardCvcError = "CVC is Required";
-      }
-      if (!this.card.exp_month) {
-        valid = false;
-        this.cardMonthError = "Month is Required";
-      }
-      if (!this.card.exp_year) {
-        valid = false;
-        this.cardYearError = "Year is Required";
-      }
-      if (valid) {
-        this.createToken();
-      }
+
+     if(valid){
+       this.sendCart();
+     }
     },
-    createToken() {
-      this.cardCheckError = false;
-      window.Stripe.setPublishableKey(this.stripeKey);
-      window.Stripe.createToken(
-        this.card,
-        $.proxy(this.stripeResponseHandler, this)
-      );
-      this.cardCheckSending = true;
+   
+    sendCart:function() {
+    
+        let cart = JSON.stringify(this.$store.state.cartProducts)
+        let request = {
+          firstName : this.firstName,
+          lastName : this.lastName,
+          phone : this.phone,
+          zip : this.zip,
+          city : this.city,
+          state : this.state,
+          street : this.street
+
+        }
+         
+        
+      this.$store.dispatch("sendCart", {cart,request});
     },
-    stripeResponseHandler(status, response) {
-      this.cardCheckSending = false;
-      if (response.error) {
-        this.cardCheckErrorMessage = response.error.message;
-        this.cardCheckError = true;
 
-        alert(response.error);
-      } else {
-        // this.tokenRetrieved = true;
-        // this.$emit('paymentEntered', response.id);
-
-        // token to create a charge on our server
-        alert('for is good')
-        var token_from_stripe = response.id;
-
-        var request = {
-          firstName: this.firstName,
-          lastName:this.lastName,
-          phone: this.phone,
-          engravingText: this.engravingText,
-          address: this.address,
-          card: this.card,
-          token_from_stripe: token_from_stripe
-        };
-
-        // Send to our server
-        axios.post(`localhost:8080/charge`, request).then(res => {
-          var error = res.data.error;
-          var charge = res.data.charge;
-          if (error) {
-           alert(error);
-          } else {
-            this.$router.push({ path: `order-success/${charge.id}` });
-          }
-        });
-      }
-    },
-  
     totalPrice() {
       let subtotal = 0;
 
       for (let product of this.$store.state.cartProducts) {
-        subtotal += product.totalPrice;
+        subtotal += parseFloat(product.totalPrice);
       }
 
       return subtotal.toFixed(2);
@@ -512,7 +537,7 @@ export default {
       let taxRate = 0.075;
       let tax = 0;
       for (let product of this.$store.state.cartProducts) {
-        tax = product.totalPrice * taxRate;
+        tax = parseFloat(product.totalPrice) * taxRate;
       }
       return tax.toFixed(2);
     },
@@ -521,7 +546,7 @@ export default {
       let subtotal = 0;
       let total = 0;
       for (let product of this.$store.state.cartProducts) {
-        subtotal += product.totalPrice;
+        subtotal += parseFloat(product.totalPrice);
         total = subtotal + subtotal * taxRate;
       }
       return total.toFixed(2);
@@ -537,24 +562,21 @@ export default {
 </script>
 
 <style scoped>
-
-.help{
-    color: red;
+.help {
+  color: red;
   display: block;
   margin: 4px 0 20px 0;
   font-weight: 400;
   font-size: 13px;
-  
 }
 .form-control:not([rows]) {
   max-height: 50px;
   min-height: 40px;
-
 }
 
-legend{
-  font-size:20px;
-  color:#444;
+legend {
+  font-size: 20px;
+  color: #444;
 }
 h6.hr {
   display: flex;
