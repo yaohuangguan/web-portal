@@ -12,17 +12,16 @@
         <div class="col-md-6 content-center card-body">
           <div class="title-box-d">
             <h3 class="title-d font-weight-bold">Become A Bakery</h3>
-            <h4>Please Send us your interest and we will contact you shortly!</h4>
-            <h4>Thank you for your patience!</h4>
+            <p>Please Send us your interest and we will contact you shortly!</p>
+            <p>Thank you for your patience!</p>
           </div>
 
           <div>
             <form class="form-a" @submit.prevent="inquire" novalidate="true">
               <div class="row">
                 <div v-if="errors.length">
-                  <b>Please correct the following error(s):</b>
-                  <ul style="color:red">
-                    <li v-for="error in errors">{{ error }}</li>
+                  <ul class="text-danger">
+                    <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
                   </ul>
                 </div>
                 <div class="col-md-8 mb-3 block">
@@ -64,10 +63,11 @@
                   <div class="float-left">
                     <ul class="list-unstyled">
                       <li class="item-list-a">
+                        Already Bakery member?
                         <router-link to="/vendorlogin">
-                          Already member?
-                          <span style="color:blue">Log in</span> here
+                          <span style="color:blue">Log in</span>
                         </router-link>
+here
                       </li>
                     </ul>
                   </div>
@@ -124,8 +124,7 @@ export default {
       };
 
       this.$store.dispatch("inquire", info).then(() => {
-      this.$router.push('/thanks')
-     
+        this.$router.push("/thanks");
       });
     },
     validEmail: function(email) {

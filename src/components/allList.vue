@@ -48,6 +48,7 @@
 import { mapActions, mapState } from "vuex";
 import btn from "./Btn";
 import api from "../services/api";
+import axios from 'axios'
 export default {
   components: {
     btn
@@ -56,7 +57,9 @@ export default {
     return {
       products: "",
       error: "",
-      loading: false
+      loading: false,
+      image:'',
+      designid:''
     };
   },
   mounted() {
@@ -66,7 +69,8 @@ export default {
       .then(res => {
         this.products = res.data;
         this.loading = false;
-        console.log(res);
+        this.designid = res.data.id
+        console.log('RESPONSE FROM FEATURED DESIGNS',res);
       })
       .catch(err => {
         console.log(err);
@@ -74,17 +78,18 @@ export default {
     api
       .get("/order/designs/all/")
       .then(res => {
-        console.log(res.data);
+        console.log('response from get designs/all/',res.data);
         this.loading = false;
         const allDesign = res.data;
       })
       .catch(err => {
         console.log(err);
       });
-    api
-      .get("/order/designs/image/${id}")
+    axios
+      .get(`http://www.cookiecannon-static.s3.awsamazon.com/order/design/image/${this.designid}/`)
       .then(res => {
-        console.log(res);
+        this.image = res.data
+        console.log('response from get image',res);
       })
       .catch(err => {
         console.log(err);
@@ -92,11 +97,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addProduct", "currentProduct"]),
-
-    addProductToCart(product) {
-      this.addProduct(product);
-    },
+    ...mapActions(["currentProduct"]),
     addCurrentProduct(product) {
       this.currentProduct(product);
     }

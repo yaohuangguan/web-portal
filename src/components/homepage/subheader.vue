@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center" style="background-color:rgba(61, 204, 89, 1);; margin-bottom:0px">
+  <div class="text-center" style="background-color:rgba(61, 204, 89, 1);; margin-bottom:0px;width:100%">
     <div @scroll="handlescroll" id="disappear" >
       <p class="font-weight-bold" style="margin-bottom:0px;padding:.5rem">
         <router-link to="/" style="text-decoration:underline;color:#fff">Get Some Tasty Cookies Today! Free Shipping Over 65$ Sitewise!</router-link>

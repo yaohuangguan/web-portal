@@ -8,7 +8,12 @@
       <br />
       <br />
       <br />
-      <div class="row d-flex justify-content-center">
+         <div class="text-center" v-if="loading">
+      <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div> 
+      <div v-else class="row d-flex justify-content-center">
         <div class="col-md-6 content-center card-body">
           <div class="title-box-d">
             <h3 class="title-d font-weight-bold">CREATE YOUR ACCOUNT</h3>
@@ -17,10 +22,10 @@
           <div>
             <form class="form-a" @submit.prevent="register" novalidate="true">
               <div class="row">
-                <div v-if="errors.length">
-                  <b>Please correct the following error(s):</b>
-                  <ul style="color:red">
-                    <li v-for="error in errors">{{ error }}</li>
+                <div v-if="errors.email.length > 0 || errors.password.length > 0">
+                  <ul class="text-danger">
+                    <li v-for="(error,index) in errors.email" :key="index">{{ error }}</li>
+                    <li v-for="(error,index) in errors.password" :key="index">{{ error }}</li>
                   </ul>
                 </div>
                 <div class="col-md-8 mb-3 block">
@@ -35,7 +40,6 @@
                       v-model="email"
                     />
                   </div>
-                  <div v-if="errors.length">{{error}}</div>
                 </div>
                 <div class="col-md-8 mb-3 block">
                   <div class="form-group" :class="{ 'form-group--error': $v.password.$error }">
@@ -48,7 +52,7 @@
                       v-model.trim="$v.password.$model"
                       name="password"
                     />
-                    
+
                     <div
                       class="text-danger"
                       v-if="!$v.password.minLength"
@@ -77,16 +81,16 @@
                   <div class="float-left">
                     <ul class="list-unstyled">
                       <li class="item-list-a">
-                        Already member?
+                        Have an account?
                         <router-link to="/login">
-                          <span style="color:blue">Log in</span>
-                        </router-link>here
+                          <span class="text-primary">Log in</span>
+                        </router-link> here
                       </li>
                     </ul>
                   </div>
                   <div class="float-right">
                     <div class="col-md-12">
-                      <button type="submit" class="btn btn-a">Register</button>
+                      <button type="submit" class="btn btn-a" :disabled="checkError">Register</button>
                     </div>
                   </div>
                 </div>
@@ -107,13 +111,15 @@ export default {
   data() {
     return {
       email: "",
-
       password: "",
       passwordConf: "",
       is_admin: null,
-      errors: []
+      loading:false,
+      errors: { email: [], password: [] },
+      checkError: false
     };
   },
+  computed: {},
   validations: {
     password: {
       required,
@@ -126,23 +132,37 @@ export default {
   components: {
     Footer
   },
+  mounted() {
+    if (this.passwordConf === "") {
+      this.checkError = false;
+    } else if (this.passwordConf !== this.password) {
+      this.checkError = true;
+      this.errors.password.push("Password Need match");
+    } else if (this.password === this.passwordConf) {
+      this.checkError = false;
+    }
+  },
   methods: {
     register: function() {
-      this.errors = [];
-      if (this.password != this.passwordConf) {
-        this.errors.push("Password Need match");
+      this.loading = true;
+      this.errors = { email: [], password: [] };
+
+      if (this.passwordConf !== this.password) {
+        this.errors.password.push('Password not matched')
       }
+
+     
       if (this.password.length < 6) {
-        this.errors.push("Password needs at least 6 characters");
+        this.errors.password.push("Password needs at least 6 characters");
       }
       if (!this.password) {
-        this.errors.push("Password is needed");
+        this.errors.password.push("Password is needed");
       }
-      if (!this.email) {
-        this.errors.push("Email required.");
-      } else if (!this.validEmail(this.email)) {
-        this.errors.push("Valid email required.");
-      }
+      // if (!this.email) {
+      //   this.errors.email.push("Email required.");
+      // } else if (!this.validEmail(this.email)) {
+      //   this.errors.email.push("Valid email required.");
+      // }
 
       let data = {
         email: this.email,
@@ -153,17 +173,27 @@ export default {
       this.$store
         .dispatch("register", data)
         .then(() => {
-          console.log("ahhaahahahahhahahaha");
+          this.loading = false;
+          console.log("register");
           this.$router.push("/login");
         })
-        .catch(err => console.log(err));
-    },
-    validEmail: function(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
+        .catch(err => {
+          console.log("Error: ", this.errors);
+          this.loading = false;
+          if (err.response.data.email) {
+            this.errors.email = this.errors.email.concat(
+              err.response.data.email
+            );
+          }
+          console.log("register error ", err.response.data);
+        });
     }
+    // validEmail: function(email) {
+    //   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //   return re.test(email);
+    // }
   }
-};
+  }
 </script>
 
 <style scoped>

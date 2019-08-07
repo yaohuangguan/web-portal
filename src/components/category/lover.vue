@@ -12,14 +12,15 @@
           class="title-single font-weight-bold"
           style="color:#444; font-size:30px;letter-spacing:3px"
         >For Lover</h1>
+         <div class="text-center" v-if="loading">
+      <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
       </div>
 
       <div class="row">
-       <div class="text-center" v-if="loading">
-          <div class="spinner-border text-success" style="width:60px;height:60px" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
+       
         <div v-if="error">{{error}}</div>
         <div>
           <div>

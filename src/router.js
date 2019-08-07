@@ -12,27 +12,27 @@ Vue.use(Router);
 
 const router = new Router({
   mode: "history",
-  base: process.env.BASE_URL,
+  base: "/",
   routes: [
     {
       path: "/",
       name: "home",
       component: Home
     },
+    {
+      path: "*",
+      component: () => import("./views/NotFound.vue")
+    },
 
     {
       path: "/cookie-menu",
       name: "Cookie",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./components/getAllCookie.vue")
+      component: () => import("./views/NotFound.vue")
     },
     {
       path: "/cake-menu",
       name: "cake",
-      component: () => import("@/components/getAllCake.vue")
+      component: () => import("@/views/NotFound.vue")
     },
 
     {
@@ -88,7 +88,7 @@ const router = new Router({
     {
       path: "/forget-password",
       name: "forget-password",
-      componentL: () => import("./views/resetPsw.vue")
+      component: () => import("./views/resetPsw.vue")
     },
 
     {
@@ -116,28 +116,34 @@ const router = new Router({
     },
 
     {
-      path: "/order-success/:id",
+      path: "/order-success/${id}",
       name: "order-success",
       component: () => import("@/views/confirmation.vue"),
       meta: {
         requiresAuth: true
       }
-    }
+    },
+   
   ]
 });
+
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
       next();
       return;
     }
-    if (to.path == "/checkout" && store.getters.isLoggedIn) {
-      next({ path: "/checkout" });
-      return;
-    }
-    next("/login");
+
+    next("/register");
   } else {
     next();
+  }
+
+  if (to.path == "/login" && store.getters.isLoggedIn) {
+    router.replace({
+      path: "/",
+     
+    });
   }
 });
 
@@ -145,7 +151,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from, next) => {
   window.scrollTo(0, 0);
   if (from.path == "/product-details" && to.path == "/") {
-    router.push("/#cookie-section");
+    router.push("/");
   }
 });
 

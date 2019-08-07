@@ -1,23 +1,8 @@
 <template>
-  <b-modal header-bg-variant="warning" id="modal-tall" title="Shopping Bag" hide-footer hide-header>
-    <br />
-    <li class="linkNavIN">
-      <div v-if="isLoggedIn">
-       
-        
-          <router-link to="/dashboard" class="span3 price-a-a" @click.native="showPopupCart()">My Account</router-link>
-          <a @click="logout" class="span3 price-a-a" @click.native="showPopupCart()">Logout</a>
-        </div>
-    
-      <router-link to="/login" v-if="!isLoggedIn" class="loginLink">
-        <span class="span3 price-a-a" @click.native="showPopupCart()">Login/SignUp</span>
-      </router-link>
-    </li>
-   
-
+  <b-modal header-bg-variant="warning" id="modal-tall" title="Shopping Bag" hide-footer>
     <div class="text-center" v-if="!hasProduct()">
       <div class="col-md">
-        <img :src="cart" width="100px" height="100px" alt="SHOPPING CART MADE BY SMASHICON" />
+        <img :src="bag" width="100px" height="100px" alt="SHOPPING CART MADE BY SMASHICON" />
       </div>
       <span style="font-size:25px;color:orange">Your Cart Is Empty.</span>
       <br />
@@ -26,43 +11,39 @@
       <br />
       <br />
 
-      
-
       <br />
     </div>
 
-    <a @click.prevent="removeAll(product)" v-if="hasProduct()" class="empty">
+    <a @click="emptyCart" v-if="hasProduct()" class="empty">
       <span>
         <b>Empty Cart</b>
         <i class="far fa-trash-alt"></i>
       </span>
     </a>
 
-    <div v-for="(product, index) in getProductsInCart" :key="index" class="box-item animatedRow">
-      <img :src="product.image" alt class="item-thumb" />
-      <h3 class="item-name">{{ product.name }}</h3>
-
-      <span class="item-amount" style="color:#444">Amount: {{product.count}}</span>
-      <span class="item-price">$ {{ product.price }}, 00</span>
-      <div style="margin-left:80px">
-        <a style="width:50%" title="add item" @click.prevent="addProductToCart(product)">
-          <span class="fas fa-plus-circle fa-2x"></span>
-        </a>
-        <a style="width:50%" title="Remove item" @click.prevent="removeFromCart(product)">
-          <i class="fas fa-minus-circle fa-2x"></i>
-        </a>
+    <div class="text-center" v-if="loading">
+      <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
+        <span class="sr-only">Loading...</span>
       </div>
+    </div>
+
+    <div v-for="(cart, index) in carts" :key="index" class="box-item animatedRow">
+      <img :src="cart.image" alt class="item-thumb" />
+      <h3 class="item-name">{{ cart.name }}</h3>
+
+      <span class="item-amount" style="color:#444">Amount: {{cart.count}}</span>
+      <span class="item-price">$ {{ cart.price }}</span>
     </div>
     <br />
     <br />
     <br />
     <div class="cart-info" v-if="hasProduct()">
       <span style="font-size:20px;">
-        <b>Total: $ {{ totalPrice() }}, 00</b>
+        <b>Total: $ {{ totalPrice() }}</b>
       </span>
 
       <router-link to="/cart">
-        <btn class="btn btn-c" @click.native="showPopupCart()">View cart</btn>
+        <btn class="btn btn-c" @click="hideCart()">View cart</btn>
       </router-link>
     </div>
   </b-modal>
@@ -71,6 +52,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import btn from "./Btn";
+import api from "../services/api";
 
 export default {
   components: {
@@ -79,13 +61,32 @@ export default {
 
   data() {
     return {
-      cart: require("@/assets/img/bag.png")
+      bag: require("@/assets/img/bag.png"),
+      carts: "",
+      loading: false,
+      error: []
     };
   },
-  
+  mounted() {
+    this.loading = true;
+    const cartid = this.$store.state.cart;
+    console.log("STATE.CART", cartid);
+    api
+      .get(`/order/viewcart/${cartid}/`)
+      .then(res => {
+        this.loading = false;
+        this.carts = res.data;
+        console.log("RESPONSE FROM VIEW CART", res.data);
+      })
+      .catch(err => {
+        this.loading = false;
+        this.error = err;
+        console.log(err);
+      });
+  },
 
   methods: {
-    ...mapActions(["showOrHiddenPopupCart", "addProduct", "removeProduct"]),
+    ...mapActions(["addProduct", "removeProduct"]),
     hasProduct() {
       return this.getProductsInCart.length > 0;
     },
@@ -96,20 +97,21 @@ export default {
         total += parseFloat(product.totalPrice);
       }
 
-      return total
+      return total;
     },
-    showPopupCart() {
-      this.showOrHiddenPopupCart();
+    showCart() {
+      this.$store.dispatch("showCart");
     },
-    removeAll(product) {
+    hideCart() {
+      console.log("test");
+      this.$store.dispatch("hideCart");
+    },
+
+    emptyCart: function(product) {
       this.$store.commit("removeAll", product);
+      this.$store.dispatch("emptyCart");
     },
-    removeFromCart(product) {
-      this.$store.commit("removeFromCart", product);
-    },
-    addProductToCart(product) {
-      this.addProduct(product);
-    },
+
     logout: function() {
       this.$store.dispatch("logout").then(() => {
         this.$router.push("/login");
@@ -118,7 +120,7 @@ export default {
   },
   computed: {
     ...mapGetters(["getProductsInCart"]),
-    isLoggedIn: function() {
+    user: function() {
       return this.$store.getters.isLoggedIn;
     }
   }

@@ -12,14 +12,15 @@
           class="title-single font-weight-bold"
           style="color:#444; font-size:30px;letter-spacing:3px"
         >Business Logo</h1>
-      </div>
 
-      <div class="row">
         <div class="text-center" v-if="loading">
-          <div class="spinner-border text-success" role="status">
+          <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
             <span class="sr-only">Loading...</span>
           </div>
         </div>
+      </div>
+
+      <div class="row">
         <div v-if="error">{{error}}</div>
         <div>
           <div>
@@ -84,9 +85,7 @@ export default {
     return {
       products: "",
       loading: false,
-      error: "",
-           
-
+      error: ""
     };
   },
   components: {
@@ -106,11 +105,8 @@ export default {
       });
   },
   methods: {
-    ...mapActions(["addProduct", "currentProduct"]),
+    ...mapActions(["currentProduct"]),
 
-    addProductToCart(product) {
-      this.addProduct(product);
-    },
     addCurrentProduct(product) {
       this.currentProduct(product);
     }

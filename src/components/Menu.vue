@@ -10,55 +10,10 @@
           <ul class="nav-links">
             <li class="linklogo">
               <router-link to="/">
-                <span class="span2" id="change">Cookie</span>
+                <span class="span2" id="change" style="padding-left:1rem">Cookie</span>
                 <span class="span2" style="color:#555">Cannon</span>
               </router-link>
             </li>
-
-            <!-- <li class="linklogo dropdown">
-              <a>
-                <span class="span2" style="padding:3rem">cookie</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <router-link class="dropdown-item" to="/happybirthday">Happy Birthday</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/Lover">Lover's Day</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/kid">For Kids</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/corporate">Business</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/christmas">Merry Christmas</router-link>
-                </li>
-              </ul>
-            </li>
-            <li class="linklogo dropdown">
-              <a>
-                <span class="span2">cake</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <router-link class="dropdown-item" to="/happybirthday">Happy Birthday</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/Lover">Lover's Day</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/kid">For Kids</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/corporate">Business</router-link>
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/christmas">Merry Christmas</router-link>
-                </li>
-              </ul>
-            </li> -->
           </ul>
         </nav>
         <slot></slot>

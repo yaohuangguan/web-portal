@@ -15,9 +15,18 @@
             <span class="sr-only">Loading...</span>
           </div>
         </div>
-        <ul v-else>
-          <li v-for="(data,index) in order" :key="index">{{data}}</li>
-        </ul>
+        <div v-else>
+          <div v-for="(data,index) in order" :key="index">
+            <div class="card-body">
+              <p>Your Name:{{data.name}}</p>
+              <p>Your Order id: {{data.id}}</p>
+              <p>Your Order Price: {{data.price}}$</p>
+              <p>Delivery Address:{{data.deliver_address}}</p>
+              <p>Note:{{data.special_instruction}}</p>
+             <h4>{{data.status}}</h4>
+            </div>
+          </div>
+        </div>
         <p v-if="error">{{error}}</p>
       </div>
     </div>

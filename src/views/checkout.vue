@@ -89,10 +89,10 @@
                     <fieldset class="has-icons-left has-icons-right">
                       <legend>Cellphone</legend>
                       <input
-                        type="number"
+                        type="text"
+                        value="+1"
                         id="phone"
                         :class="['is-danger' ? phoneError : '', 'form-control d-block w-100 mb-2']"
-                        placeholder="xxx-xxxx-xxxx"
                         v-model="phone"
                         required
                       />
@@ -109,63 +109,7 @@
                           v-model="state"
                           required
                         >
-                          <option value="AL">Alabama</option>
-                          <option value="AK">Alaska</option>
-                          <option value="AS">American Samoa</option>
-                          <option value="AZ">Arizona</option>
-                          <option value="AR">Arkansas</option>
-                          <option value="CA">California</option>
-                          <option value="CO">Colorado</option>
-                          <option value="CT">Connecticut</option>
-                          <option value="DE">Delaware</option>
-                          <option value="DC">Dist of Columbia</option>
-                          <option value="FL">Florida</option>
-                          <option value="GA">Georgia</option>
-                          <option value="GU">Guam</option>
-                          <option value="HI">Hawaii</option>
-                          <option value="ID">Idaho</option>
-                          <option value="IL">Illinois</option>
-                          <option value="IN">Indiana</option>
-                          <option value="IA">Iowa</option>
-                          <option value="KS">Kansas</option>
-                          <option value="KY">Kentucky</option>
-                          <option value="LA">Louisiana</option>
-                          <option value="ME">Maine</option>
-                          <option value="MD">Maryland</option>
-                          <option value="MA">Massachusetts</option>
-                          <option value="MI">Michigan</option>
-                          <option value="MN">Minnesota</option>
-                          <option value="UM">Minor Outlying Islands</option>
-                          <option value="MS">Mississippi</option>
-                          <option value="MO">Missouri</option>
-                          <option value="MT">Montana</option>
-                          <option value="NE">Nebraska</option>
-                          <option value="NV">Nevada</option>
-                          <option value="NH">New Hampshire</option>
-                          <option value="NJ">New Jersey</option>
-                          <option value="NM">New Mexico</option>
-                          <option value="NY">New York</option>
-                          <option value="NC">North Carolina</option>
-                          <option value="ND">North Dakota</option>
-                          <option value="MP">Northern Mariana Islands</option>
-                          <option value="OH">Ohio</option>
-                          <option value="OK">Oklahoma</option>
-                          <option value="OR">Oregon</option>
-                          <option value="PA">Pennsylvania</option>
-                          <option value="PR">Puerto Rico</option>
-                          <option value="RI">Rhode Island</option>
-                          <option value="SC">South Carolina</option>
-                          <option value="SD">South Dakota</option>
-                          <option value="TN">Tennessee</option>
-                          <option value="TX">Texas</option>
-                          <option value="UT">Utah</option>
-                          <option value="VT">Vermont</option>
-                          <option value="VA">Virginia</option>
-                          <option value="VI">U.S. Virgin Islands</option>
-                          <option value="WA">Washington</option>
-                          <option value="WV">West Virginia</option>
-                          <option value="WI">Wisconsin</option>
-                          <option value="WY">Wyoming</option>
+                          <option v-for="(state,index) in states" :key="index">{{state.name}}</option>
                         </select>
 
                         <div class="help is-danger" v-show="StateError">{{StateError}}</div>
@@ -357,26 +301,261 @@ export default {
   name: "checkout",
   data() {
     return {
+      states: [
+        {
+          name: "Alabama",
+          abbreviation: "AL"
+        },
+        {
+          name: "Alaska",
+          abbreviation: "AK"
+        },
+        {
+          name: "American Samoa",
+          abbreviation: "AS"
+        },
+        {
+          name: "Arizona",
+          abbreviation: "AZ"
+        },
+        {
+          name: "Arkansas",
+          abbreviation: "AR"
+        },
+        {
+          name: "California",
+          abbreviation: "CA"
+        },
+        {
+          name: "Colorado",
+          abbreviation: "CO"
+        },
+        {
+          name: "Connecticut",
+          abbreviation: "CT"
+        },
+        {
+          name: "Delaware",
+          abbreviation: "DE"
+        },
+        {
+          name: "District Of Columbia",
+          abbreviation: "DC"
+        },
+        {
+          name: "Federated States Of Micronesia",
+          abbreviation: "FM"
+        },
+        {
+          name: "Florida",
+          abbreviation: "FL"
+        },
+        {
+          name: "Georgia",
+          abbreviation: "GA"
+        },
+        {
+          name: "Guam",
+          abbreviation: "GU"
+        },
+        {
+          name: "Hawaii",
+          abbreviation: "HI"
+        },
+        {
+          name: "Idaho",
+          abbreviation: "ID"
+        },
+        {
+          name: "Illinois",
+          abbreviation: "IL"
+        },
+        {
+          name: "Indiana",
+          abbreviation: "IN"
+        },
+        {
+          name: "Iowa",
+          abbreviation: "IA"
+        },
+        {
+          name: "Kansas",
+          abbreviation: "KS"
+        },
+        {
+          name: "Kentucky",
+          abbreviation: "KY"
+        },
+        {
+          name: "Louisiana",
+          abbreviation: "LA"
+        },
+        {
+          name: "Maine",
+          abbreviation: "ME"
+        },
+        {
+          name: "Marshall Islands",
+          abbreviation: "MH"
+        },
+        {
+          name: "Maryland",
+          abbreviation: "MD"
+        },
+        {
+          name: "Massachusetts",
+          abbreviation: "MA"
+        },
+        {
+          name: "Michigan",
+          abbreviation: "MI"
+        },
+        {
+          name: "Minnesota",
+          abbreviation: "MN"
+        },
+        {
+          name: "Mississippi",
+          abbreviation: "MS"
+        },
+        {
+          name: "Missouri",
+          abbreviation: "MO"
+        },
+        {
+          name: "Montana",
+          abbreviation: "MT"
+        },
+        {
+          name: "Nebraska",
+          abbreviation: "NE"
+        },
+        {
+          name: "Nevada",
+          abbreviation: "NV"
+        },
+        {
+          name: "New Hampshire",
+          abbreviation: "NH"
+        },
+        {
+          name: "New Jersey",
+          abbreviation: "NJ"
+        },
+        {
+          name: "New Mexico",
+          abbreviation: "NM"
+        },
+        {
+          name: "New York",
+          abbreviation: "NY"
+        },
+        {
+          name: "North Carolina",
+          abbreviation: "NC"
+        },
+        {
+          name: "North Dakota",
+          abbreviation: "ND"
+        },
+        {
+          name: "Northern Mariana Islands",
+          abbreviation: "MP"
+        },
+        {
+          name: "Ohio",
+          abbreviation: "OH"
+        },
+        {
+          name: "Oklahoma",
+          abbreviation: "OK"
+        },
+        {
+          name: "Oregon",
+          abbreviation: "OR"
+        },
+        {
+          name: "Palau",
+          abbreviation: "PW"
+        },
+        {
+          name: "Pennsylvania",
+          abbreviation: "PA"
+        },
+        {
+          name: "Puerto Rico",
+          abbreviation: "PR"
+        },
+        {
+          name: "Rhode Island",
+          abbreviation: "RI"
+        },
+        {
+          name: "South Carolina",
+          abbreviation: "SC"
+        },
+        {
+          name: "South Dakota",
+          abbreviation: "SD"
+        },
+        {
+          name: "Tennessee",
+          abbreviation: "TN"
+        },
+        {
+          name: "Texas",
+          abbreviation: "TX"
+        },
+        {
+          name: "Utah",
+          abbreviation: "UT"
+        },
+        {
+          name: "Vermont",
+          abbreviation: "VT"
+        },
+        {
+          name: "Virgin Islands",
+          abbreviation: "VI"
+        },
+        {
+          name: "Virginia",
+          abbreviation: "VA"
+        },
+        {
+          name: "Washington",
+          abbreviation: "WA"
+        },
+        {
+          name: "West Virginia",
+          abbreviation: "WV"
+        },
+        {
+          name: "Wisconsin",
+          abbreviation: "WI"
+        },
+        {
+          name: "Wyoming",
+          abbreviation: "WY"
+        }
+      ],
       firstName: "",
       lastName: "",
       phone: "",
       engravingText: "",
-      
-        street: "",
-        city: "",
-        state: "",
-        zip: "",
-      
 
-      
+      street: "",
+      city: "",
+      state: "",
+      zip: "",
 
       firstNameError: null,
       lastNameError: null,
       phoneError: null,
       StreetError: null,
-     StateError: null,
-     CityError: null,
-     ZipError: null,
+      StateError: null,
+      CityError: null,
+      ZipError: null,
 
       cardCheckSending: false,
 
@@ -501,27 +680,23 @@ export default {
         this.phoneError = "Phone Number is Required";
       }
 
-     if(valid){
-       this.sendCart();
-     }
+      if (valid) {
+        this.sendCart();
+      }
     },
-   
-    sendCart:function() {
-    
-        let cart = JSON.stringify(this.$store.state.cartProducts)
-        let request = {
-          firstName : this.firstName,
-          lastName : this.lastName,
-          phone : this.phone,
-          zip : this.zip,
-          city : this.city,
-          state : this.state,
-          street : this.street
 
-        }
-         
-        
-      this.$store.dispatch("sendCart", {cart,request});
+    sendCart: function() {
+      let cardCheckSending = true;
+      let request = JSON.stringify({
+        name: this.firstName + this.lastName,
+        phone: this.phone,
+        zip: this.zip,
+        city: this.city,
+        state: this.state,
+        street: this.street
+      });
+
+      this.$store.dispatch("sendCart", { request });
     },
 
     totalPrice() {

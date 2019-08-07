@@ -41,19 +41,19 @@
           <!-- Links -->
           <h6 class="text-uppercase font-weight-bold">Products</h6>
           <hr class="black accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-          <p>
+          <!-- <p>
             <router-link to="/cookie-menu" class="dark-grey-text">Cookie</router-link>
           </p>
           <p>
             <router-link to="/cake-menu" class="dark-grey-text">
              Cake
             </router-link>
+          </p> -->
+          <p>
+            <router-link class="dark-grey-text" to="/nutrition">Nutrition Plan</router-link>
           </p>
           <p>
-            <router-link class="dark-grey-text">Nutrition Plan</router-link>
-          </p>
-          <p>
-            <router-link class="dark-grey-text">Other</router-link>
+            <router-link class="dark-grey-text" to="/other">Other</router-link>
           </p>
   
         </div>
