@@ -70,32 +70,36 @@ export default {
       cartdata: ""
     };
   },
-  async created() {
+  created() {
     this.loading = true;
     const cartid = this.$store.state.cart;
     console.log("STATE.CART", cartid);
 
-    try {
-      const res = await api.get(`/order/viewcart/${cartid}/`);
-      this.loading = false;
-      this.carts = res.data;
-      localStorage.setItem("Carts", this.carts);
-      console.log("RESPONSE FROM VIEW CART", res.data);
-    } catch (err) {
-      this.loading = false;
-      this.error = err;
-      console.log(err);
-    }
-    try {
-      const res = await api.get(`/order/getcartdata/${cartid}/`);
-      this.loading = false;
-      console.log(res);
-      this.cartdata = res.data;
-    } catch (err) {
-      this.loading = false;
+    api
+      .get(`/order/viewcart/${cartid}/`)
+      .then(res => {
+        this.loading = false;
+        this.carts = res.data;
+        localStorage.setItem("Carts", this.carts);
+        console.log("RESPONSE FROM VIEW CART", res.data);
+      })
+      .catch(err => {
+        this.loading = false;
+        this.error = err;
+        console.log(err);
+      });
+    api
+      .get(`/order/getcartdata/${cartid}/`)
+      .then(res => {
+        this.loading = false;
+        console.log(res);
+        this.cartdata = res.data;
+      })
+      .catch(err => {
+        this.loading = false;
 
-      console.log(err);
-    }
+        console.log(err);
+      });
   },
 
   methods: {
@@ -114,9 +118,10 @@ export default {
     emptyCart: async function(product) {
       this.loading = true;
       this.$store.commit("removeAll", product);
+      const cartid = this.$store.state.cart;
 
       try {
-        const res = await api.delete("/order/cart/delete/" + this.cart + "/");
+        const res = await api.delete("/order/cart/delete/" + cartid + "/");
         this.loading = false;
         console.log(res);
       } catch (err) {

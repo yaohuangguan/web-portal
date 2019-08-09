@@ -127,9 +127,7 @@
             <i v-if="!hasProduct()" class="fas fa-shopping-bag fa-lg"></i>
 
             <span v-if="hasProduct()" class="fas fa-shopping-bag fa-lg" style="color:#333">
-              <i
-                style="color:#fff"
-              >{{ cartcount() }}</i>
+              <i style="color:#fff">{{ cartcount() }}</i>
             </span>
           </span>
         </btn>
@@ -206,7 +204,7 @@ export default {
     return {
       carts: "",
       loading: false,
-      Carts:localStorage.getItem('Carts')
+      Carts: localStorage.getItem("Carts")
     };
   },
   mounted() {
@@ -229,8 +227,8 @@ export default {
     hasProduct() {
       return this.carts.length > 0;
     },
-    cartcount(){
-      return this.carts.length
+    cartcount() {
+      return this.carts.length;
     },
 
     showCart() {
@@ -244,7 +242,6 @@ export default {
     logout: function() {
       this.$store.dispatch("logout").then(() => {
         this.$router.push("/login");
-        window.location.reload();
       });
     }
   },
