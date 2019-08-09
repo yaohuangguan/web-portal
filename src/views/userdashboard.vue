@@ -5,7 +5,6 @@
       <br />
       <br />
       <br />
-      <h1 class="font-weight-bold">Welcome!</h1>
     </div>
     <div class="row">
       <div>
@@ -16,18 +15,21 @@
           </div>
         </div>
         <div v-else>
-          <div v-for="(data,index) in order" :key="index">
-            <div class="card-body">
-              <p>Your Name:{{data.name}}</p>
-              <p>Your Order id: {{data.id}}</p>
-              <p>Your Order Price: {{data.price}}$</p>
-              <p>Delivery Address:{{data.deliver_address}}</p>
-              <p>Note:{{data.special_instruction}}</p>
-             <h4>{{data.status}}</h4>
+          <div v-if="hasOrder()">
+            <div v-for="(data,index) in order" :key="index" class="col">
+              <div class="card-body">
+                 <p>Your Order id: {{data.id}}</p>
+                <p>Your Name:{{data.name}}</p>
+                <p>Your Order Price: {{data.price}}$</p>
+                <p>Delivery Address:{{data.deliver_address}}</p>
+                <p>Note:{{data.special_instruction}}</p>
+                <h4>{{data.status}}</h4>
+              </div>
             </div>
           </div>
+          <div v-else>NO ORDER FOUND</div>
+          <p v-if="error">{{error}}</p>
         </div>
-        <p v-if="error">{{error}}</p>
       </div>
     </div>
   </div>
@@ -36,28 +38,33 @@
 <script>
 import api from "../services/api";
 export default {
+  name: "userdashboard",
   data() {
     return {
       order: "",
       loading: false,
       error: "",
-      user:''
+      user: "",
+      check: false
     };
   },
-  mounted() {
+  methods: {
+    hasOrder() {
+      return this.order.length > 0;
+    }
+  },
+  async created() {
     this.loading = true;
-    api
-      .get("/order/past/")
-      .then(response => {
-        this.loading = false;
-        this.order = response.data;
-        console.log(response.data)
-      })
-      .catch(err => {
-        this.loading = false;
-        this.error = err;
-      });
-    
+
+    try {
+      const res = await api.get("/order/past/");
+      this.loading = false;
+      this.order = res.data;
+      console.log(res.data);
+    } catch (err) {
+      this.loading = false;
+      this.error = err;
+    }
   }
 };
 </script>

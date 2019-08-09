@@ -81,6 +81,7 @@ import { mapActions, mapState } from "vuex";
 import api from "@/services/api";
 import Footer from "../Footer";
 export default {
+  name: "business",
   data() {
     return {
       products: "",
@@ -91,13 +92,13 @@ export default {
   components: {
     Footer
   },
-  mounted() {
+  created() {
     this.loading = true;
     api
       .get("/order/designs/9/")
-      .then(response => {
+      .then(res => {
         this.loading = false;
-        this.products = response.data;
+        this.products = res.data;
       })
       .catch(err => {
         this.loading = false;

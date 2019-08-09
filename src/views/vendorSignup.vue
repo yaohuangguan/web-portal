@@ -10,20 +10,19 @@
       <br />
       <div class="row d-flex justify-content-center">
         <div class="col-md-6 content-center card-body">
-          <div class="title-box-d">
-            <h3 class="title-d font-weight-bold">Become A Bakery</h3>
+          
+            <h3 class="title-d font-weight-bold color-b">Become A Bakery</h3>
             <p>Please Send us your interest and we will contact you shortly!</p>
             <p>Thank you for your patience!</p>
+          
+          <div v-if="errors.length">
+            <ul class="text-danger list-unstyled">
+              <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
+            </ul>
           </div>
-
           <div>
             <form class="form-a" @submit.prevent="inquire" novalidate="true">
               <div class="row">
-                <div v-if="errors.length">
-                  <ul class="text-danger">
-                    <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
-                  </ul>
-                </div>
                 <div class="col-md-8 mb-3 block">
                   <div class="form-group">
                     <label for="email">Email</label>
@@ -66,8 +65,7 @@
                         Already Bakery member?
                         <router-link to="/vendorlogin">
                           <span style="color:blue">Log in</span>
-                        </router-link>
-here
+                        </router-link>here
                       </li>
                     </ul>
                   </div>

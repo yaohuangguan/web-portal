@@ -8,26 +8,25 @@
       <br />
       <br />
       <br />
-         <div class="text-center" v-if="loading">
-      <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
-        <span class="sr-only">Loading...</span>
+      <div class="text-center" v-if="loading">
+        <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
-    </div> 
       <div v-else class="row d-flex justify-content-center">
         <div class="col-md-6 content-center card-body">
           <div class="title-box-d">
             <h3 class="title-d font-weight-bold">CREATE YOUR ACCOUNT</h3>
           </div>
-
+          <div v-if="errors.email.length > 0 || errors.password.length > 0">
+            <ul class="text-danger list-unstyled">
+              <li v-for="(error,index) in errors.email" :key="index">{{ error }}</li>
+              <li v-for="(error,index) in errors.password" :key="index">{{ error }}</li>
+            </ul>
+          </div>
           <div>
             <form class="form-a" @submit.prevent="register" novalidate="true">
               <div class="row">
-                <div v-if="errors.email.length > 0 || errors.password.length > 0">
-                  <ul class="text-danger">
-                    <li v-for="(error,index) in errors.email" :key="index">{{ error }}</li>
-                    <li v-for="(error,index) in errors.password" :key="index">{{ error }}</li>
-                  </ul>
-                </div>
                 <div class="col-md-8 mb-3 block">
                   <div class="form-group">
                     <label for="inputName">Email</label>
@@ -84,7 +83,7 @@
                         Have an account?
                         <router-link to="/login">
                           <span class="text-primary">Log in</span>
-                        </router-link> here
+                        </router-link>here
                       </li>
                     </ul>
                   </div>
@@ -114,7 +113,7 @@ export default {
       password: "",
       passwordConf: "",
       is_admin: null,
-      loading:false,
+      loading: false,
       errors: { email: [], password: [] },
       checkError: false
     };
@@ -148,21 +147,20 @@ export default {
       this.errors = { email: [], password: [] };
 
       if (this.passwordConf !== this.password) {
-        this.errors.password.push('Password not matched')
+        this.errors.password.push("Password not matched");
       }
 
-     
       if (this.password.length < 6) {
         this.errors.password.push("Password needs at least 6 characters");
       }
       if (!this.password) {
         this.errors.password.push("Password is needed");
       }
-      // if (!this.email) {
-      //   this.errors.email.push("Email required.");
-      // } else if (!this.validEmail(this.email)) {
-      //   this.errors.email.push("Valid email required.");
-      // }
+      if (!this.email) {
+        this.errors.email.push("Please Enter Email.");
+      } else if (!this.validEmail(this.email)) {
+        this.errors.email.push("Valid email required.");
+      }
 
       let data = {
         email: this.email,
@@ -187,13 +185,13 @@ export default {
           }
           console.log("register error ", err.response.data);
         });
+    },
+    validEmail: function(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
     }
-    // validEmail: function(email) {
-    //   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //   return re.test(email);
-    // }
   }
-  }
+};
 </script>
 
 <style scoped>

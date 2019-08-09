@@ -38,6 +38,7 @@
 import Footer from "./Footer";
 import { setTimeout } from "timers";
 export default {
+  name:'thankVendor',
   components: {
     Footer
   },
@@ -50,8 +51,7 @@ export default {
   },
   created() {
     this.redirect();
-  },
-  mounted() {
+  
     var timeleft = 5;
     var downloadTimer = setInterval(function() {
       document.getElementById("demo").innerHTML =

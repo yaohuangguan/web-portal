@@ -28,7 +28,7 @@ const store = new Vuex.Store({
     refresh_token: localStorage.getItem("refresh_token") || "",
     user: {},
     cart: localStorage.getItem("cart") || "",
-
+    Carts: localStorage.getItem("Carts") || [],
     currentProduct: currentProduct ? JSON.parse(currentProduct) : {},
     showPopupCart: false
   },
@@ -49,6 +49,7 @@ const store = new Vuex.Store({
       state.status = "";
       state.access_token = "";
       state.refresh_token = "";
+      state.cart = "";
     },
 
     ADD_PRODUCT: (state, product) => {
@@ -128,8 +129,9 @@ const store = new Vuex.Store({
       state.currentProduct = product;
       saveCurrent(state.currentProduct);
     },
-    cartID(state, cart) {
+    cartID(state, cart, id) {
       state.cart = cart;
+      state.id = id;
     },
 
     SHOW(state) {
@@ -155,52 +157,6 @@ const store = new Vuex.Store({
       context.commit("HIDE");
     },
 
-    //add 1 product in cart
-    updateProduct(state, { data, id }) {
-      return new Promise((resolve, reject) => {
-        api
-          .put(`/order/item/update/${id}/`, data)
-          .then(res => {
-            console.log("response from updateCart", res);
-            resolve(res);
-          })
-          .catch(err => {
-            console.log("error from updateCart", err);
-            reject(err);
-          });
-      });
-    },
-
-    //delete one product in cart
-    deleteProduct(state, { data, id }) {
-      return new Promise((resolve, reject) => {
-        api
-          .delete(`/order/item/update/${id}/`, data)
-          .then(res => {
-            console.log("response from deleteCart", res);
-            resolve(res);
-          })
-          .catch(err => {
-            console.log("error from deleteCart", err);
-            reject(err);
-          });
-      });
-    },
-    //empty all the product in cart
-    emptyCart({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        api
-          .delete(`/order/cart/delete/${this.cart}/`, data)
-          .then(res => {
-            console.log("response from empty cart", res.data);
-            resolve(res);
-          })
-          .catch(err => {
-            console.log("error from empty cart", err);
-            reject(err);
-          });
-      });
-    },
     //send cart to checkout
     sendCart({ commit }, { cart, request }) {
       return new Promise((resolve, reject) => {
@@ -224,9 +180,33 @@ const store = new Vuex.Store({
           .then(res => {
             console.log("response from add cart", res.data);
             const cart = res.data.cart;
+            const id = res.data.id;
             console.log("cart id", res.data);
+            localStorage.setItem("id", id);
             localStorage.setItem("cart", cart);
-            commit("cartID", cart);
+            commit("cartID", cart, id);
+            resolve(res.data);
+          })
+          .catch(err => {
+            console.log("error from add cart", err);
+            reject(err);
+          });
+      });
+    },
+
+    updateCart({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        const id = this.$store.state.currentProduct.id;
+        api
+          .put(`/order/item/update/${id}`, data)
+          .then(res => {
+            console.log("response from add cart", res.data);
+            const cart = res.data.cart;
+            const id = res.data.id;
+            console.log("cart id", res.data);
+            localStorage.setItem("id", id);
+            localStorage.setItem("cart", cart);
+            commit("cartID", cart, id);
             resolve(res.data);
           })
           .catch(err => {
@@ -319,8 +299,8 @@ const store = new Vuex.Store({
             this.isRefreshing = false;
             const refresh_token = res.data.refresh;
             const access_token = res.data.access;
-            window.localStorage.setItem("refresh_token", res.data.refresh);
-            window.localStorage.setItem("access_token", res.data.access);
+            localStorage.setItem("refresh_token", refresh_token);
+            localStorage.setItem("access_token", access_token);
             commit("auth_success", access_token, refresh_token);
             console.log("new token", access_token);
             resolve(res);
@@ -336,12 +316,9 @@ const store = new Vuex.Store({
     logout({ commit }) {
       return new Promise((resolve, reject) => {
         commit("logout");
-        commit("clearProduct");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        localStorage.removeItem("cartCount");
-        localStorage.removeItem("cartProducts");
-        localStorage.removeItem("currentProduct");
+        localStorage.removeItem("cart");
         delete api.defaults.headers.common["Authorization"];
         resolve();
       });

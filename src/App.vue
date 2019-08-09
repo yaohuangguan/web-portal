@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <Menu>
       <li class="linkNav dropdown">
         <div>
@@ -120,15 +120,16 @@
         </router-link>
       </li>
 
+      <!-- shopping cart button -->
       <div class="buttonBlock">
-        <btn class="btn-x" id="cartAnimate" v-b-modal.modal-tall @click="showCart()">
+        <btn class="btn-x" id="cartAnimate" @click.native="showCart()" v-b-modal.modal-tall>
           <span>
             <i v-if="!hasProduct()" class="fas fa-shopping-bag fa-lg"></i>
 
             <span v-if="hasProduct()" class="fas fa-shopping-bag fa-lg" style="color:#333">
               <i
                 style="color:#fff"
-              >{{ getProductsInCart.reduce((acc,currentProduct) => acc + currentProduct.count,0) }}</i>
+              >{{ cartcount() }}</i>
             </span>
           </span>
         </btn>
@@ -136,11 +137,11 @@
 
       <div class="bar">
         <div class="dropdown">
-          <span style="color: rgba(61, 204, 89, 1); font-size:40px;padding:1rem;">
+          <span id="dropdown2" style="color: rgba(61, 204, 89, 1); font-size:40px;padding:1rem;">
             <i class="fas fa-bars"></i>
           </span>
 
-          <ul class="dropdown-menu" style="right: 0; left: auto;">
+          <ul class="dropdown-menu" aria-labelledby="dropdown2" style="right: 0; left: auto;">
             <li>
               <router-link class="dropdown-item" to="/happybirthday">Happy Birthday</router-link>
             </li>
@@ -174,7 +175,7 @@
               </div>
               <div v-if="hasProduct()">
                 <a v-b-modal.modal-tall @click="showCart()" class="dropdown-item">
-                  <span>cart({{ getProductsInCart.reduce((acc,currentProduct) => acc + currentProduct.count,0) }})</span>
+                  <span>cart({{ cartcount() }})</span>
                 </a>
               </div>
             </li>
@@ -193,7 +194,7 @@ import { mapGetters, mapActions } from "vuex";
 import popupcart from "@/components/Popupcart";
 import btn from "@/components/Btn";
 import Menu from "@/components/Menu";
-import api from './services/api'
+import api from "./services/api";
 export default {
   name: "app",
   components: {
@@ -201,35 +202,39 @@ export default {
     btn,
     popupcart
   },
-  data(){
-    return{
-      carts:'',
-      loading:false
-    }
+  data() {
+    return {
+      carts: "",
+      loading: false,
+      Carts:localStorage.getItem('Carts')
+    };
   },
-  mounted(){
-     const cartid = this.$store.state.cart;
-    console.log('THIS IS THE STATE.CART',cartid);
+  mounted() {
+    const cartid = this.$store.state.cart;
+    console.log("THIS IS THE STATE.CART", cartid);
     api
       .get(`/order/viewcart/${cartid}/`)
       .then(res => {
         this.loading = false;
         this.carts = res.data;
-        console.log('response from view cart',res.data);
+        console.log("response from view cart", res.data);
       })
       .catch(err => {
         this.loading = false;
         this.error = err;
-        console.log('error from view cart',err);
+        console.log("error from view cart", err);
       });
   },
   methods: {
     hasProduct() {
-      return this.getProductsInCart.length > 0;
+      return this.carts.length > 0;
     },
- 
+    cartcount(){
+      return this.carts.length
+    },
+
     showCart() {
-      console.log('showcart working')
+      console.log("showcart working");
       this.$store.dispatch("showCart");
     },
     hideCart() {
@@ -239,9 +244,11 @@ export default {
     logout: function() {
       this.$store.dispatch("logout").then(() => {
         this.$router.push("/login");
+        window.location.reload();
       });
     }
   },
+
   computed: {
     ...mapGetters(["getProductsInCart", "getPopupCart"]),
     isLoggedIn: function() {

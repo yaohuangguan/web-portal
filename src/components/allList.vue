@@ -11,7 +11,7 @@
         <div class="card">
           <router-link to="/product-details">
             <img
-              :src="product.image"
+              :src="img + product.image"
               alt
               class="img-b img-fluid card-img-top"
               style="height:250px"
@@ -48,7 +48,7 @@
 import { mapActions, mapState } from "vuex";
 import btn from "./Btn";
 import api from "../services/api";
-import axios from 'axios'
+import axios from "axios";
 export default {
   components: {
     btn
@@ -58,42 +58,34 @@ export default {
       products: "",
       error: "",
       loading: false,
-      image:'',
-      designid:''
+      image: "",
+      img:
+        "http://www.cookiecannon-static.s3.awsamazon.com/order/design/image/",
+      designid: ""
     };
   },
-  mounted() {
+  computed: {},
+  async created() {
     this.loading = true;
-    api
-      .get("/order/designs/featured/")
-      .then(res => {
-        this.products = res.data;
-        this.loading = false;
-        this.designid = res.data.id
-        console.log('RESPONSE FROM FEATURED DESIGNS',res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    api
-      .get("/order/designs/all/")
-      .then(res => {
-        console.log('response from get designs/all/',res.data);
-        this.loading = false;
-        const allDesign = res.data;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    axios
-      .get(`http://www.cookiecannon-static.s3.awsamazon.com/order/design/image/${this.designid}/`)
-      .then(res => {
-        this.image = res.data
-        console.log('response from get image',res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    try {
+      const res = await api.get("/order/designs/featured/");
+      
+      this.products = res.data;
+      this.loading = false;
+      this.designid = res.data.id;
+      console.log("RESPONSE FROM FEATURED DESIGNS", res.data);
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      const res = await api.get("/order/designs/all/");
+      this.loading = false;
+      this.all = res.data;
+      console.log("response from get designs/all/", res.data);
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   methods: {
@@ -106,7 +98,5 @@ export default {
 </script>
 
 <style>
-.product {
-}
 </style>
 

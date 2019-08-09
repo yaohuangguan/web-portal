@@ -27,9 +27,9 @@
       </div>
     </div>
 
-    <div v-for="(cart, index) in carts" :key="index" class="box-item animatedRow">
+    <div v-for="(cart, index) in carts" :key="index" class="box-item">
       <img :src="cart.image" alt class="item-thumb" />
-      <h3 class="item-name">{{ cart.name }}</h3>
+      <h3 class="item-name">{{ cart.design }}</h3>
 
       <span class="item-amount" style="color:#444">Amount: {{cart.count}}</span>
       <span class="item-price">$ {{ cart.price }}</span>
@@ -38,9 +38,10 @@
     <br />
     <br />
     <div class="cart-info" v-if="hasProduct()">
-      <span style="font-size:20px;">
-        <b>Total: $ {{ totalPrice() }}</b>
-      </span>
+      <p>
+        <b>Total: $ {{cartdata.subtotal }}</b>
+        <br />
+      </p>
 
       <router-link to="/cart">
         <btn class="btn btn-c" @click="hideCart()">View cart</btn>
@@ -64,52 +65,66 @@ export default {
       bag: require("@/assets/img/bag.png"),
       carts: "",
       loading: false,
-      error: []
+      error: [],
+      cart: localStorage.getItem("cart"),
+      cartdata: ""
     };
   },
-  mounted() {
+  async created() {
     this.loading = true;
     const cartid = this.$store.state.cart;
     console.log("STATE.CART", cartid);
-    api
-      .get(`/order/viewcart/${cartid}/`)
-      .then(res => {
-        this.loading = false;
-        this.carts = res.data;
-        console.log("RESPONSE FROM VIEW CART", res.data);
-      })
-      .catch(err => {
-        this.loading = false;
-        this.error = err;
-        console.log(err);
-      });
+
+    try {
+      const res = await api.get(`/order/viewcart/${cartid}/`);
+      this.loading = false;
+      this.carts = res.data;
+      localStorage.setItem("Carts", this.carts);
+      console.log("RESPONSE FROM VIEW CART", res.data);
+    } catch (err) {
+      this.loading = false;
+      this.error = err;
+      console.log(err);
+    }
+    try {
+      const res = await api.get(`/order/getcartdata/${cartid}/`);
+      this.loading = false;
+      console.log(res);
+      this.cartdata = res.data;
+    } catch (err) {
+      this.loading = false;
+
+      console.log(err);
+    }
   },
 
   methods: {
     ...mapActions(["addProduct", "removeProduct"]),
     hasProduct() {
-      return this.getProductsInCart.length > 0;
-    },
-    totalPrice() {
-      let total = 0;
-
-      for (let product of this.$store.state.cartProducts) {
-        total += parseFloat(product.totalPrice);
-      }
-
-      return total;
+      return this.carts.length > 0;
     },
     showCart() {
       this.$store.dispatch("showCart");
     },
     hideCart() {
-      console.log("test");
+      console.log("hide cart working ");
       this.$store.dispatch("hideCart");
     },
 
-    emptyCart: function(product) {
+    emptyCart: async function(product) {
+      this.loading = true;
       this.$store.commit("removeAll", product);
-      this.$store.dispatch("emptyCart");
+
+      try {
+        const res = await api.delete("/order/cart/delete/" + this.cart + "/");
+        this.loading = false;
+        console.log(res);
+      } catch (err) {
+        this.loading = false;
+
+        console.log(err);
+      }
+      window.location.reload();
     },
 
     logout: function() {

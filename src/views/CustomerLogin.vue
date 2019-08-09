@@ -8,41 +8,41 @@
       <br />
       <br />
       <br />
-         <div class="text-center" v-if="loading">
-      <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
-        <span class="sr-only">Loading...</span>
+      <div class="text-center" v-if="loading">
+        <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
-    </div>
       <div v-else class="row d-flex justify-content-center">
         <div class="col-md-6 content-center">
           <div class="title-box-d">
             <h3 class="font-weight-bold title-d">LOG IN TO YOUR ACCOUNT</h3>
           </div>
+          <div v-if="errors.username.length > 0" class="list-unstyled">
+            <li
+              class="text-danger"
+              v-for="(error,index) in errors.username"
+              :key="index"
+            >Username:{{ error }}</li>
+          </div>
+
+          <div v-if="errors.password.length > 0" class="list-unstyled">
+            <li
+              class="text-danger"
+              v-for="(error,index) in errors.password"
+              :key="index"
+            >Password:{{ error }}</li>
+          </div>
+          <div v-if="errors.detail.length > 0" class="list-unstyled">
+            <li
+              class="text-danger"
+              v-for="(error,index) in errors.detail"
+              :key="index"
+            >detail:{{ error }}</li>
+          </div>
           <div>
             <form class="form-a" @submit.prevent="login" novalidate="true">
               <div class="row">
-                <div v-if="errors.username.length > 0">
-                  <li
-                    class="text-danger"
-                    v-for="(error,index) in errors.username"
-                    :key="index"
-                  >Username:{{ error }}</li>
-                </div>
-
-                <div v-if="errors.password.length > 0">
-                  <li
-                    class="text-danger"
-                    v-for="(error,index) in errors.password"
-                    :key="index"
-                  >Password:{{ error }}</li>
-                </div>
-                <div v-if="errors.detail.length > 0">
-                  <li
-                    class="text-danger"
-                    v-for="(error,index) in errors.detail"
-                    :key="index"
-                  >detail:{{ error }}</li>
-                </div>
                 <div class="col-md-8 mb-3 block">
                   <div class="form-group">
                     <label for="inputName">Email</label>
@@ -79,7 +79,10 @@
                       </li>
                       <br />
                       <li class="item-list-a">
-                       New Cusomter? <router-link to="/register"><span class="text-primary">SIGN UP NOW</span></router-link>
+                        New Cusomter?
+                        <router-link to="/register">
+                          <span class="text-primary">SIGN UP NOW</span>
+                        </router-link>
                       </li>
                     </ul>
                   </div>
@@ -111,7 +114,7 @@ export default {
     return {
       username: "",
       password: "",
-      loading:false,
+      loading: false,
       errors: { username: [], password: [], detail: [] }
     };
   },
@@ -120,7 +123,7 @@ export default {
   },
   methods: {
     login: function() {
-      this.loading= true;
+      this.loading = true;
       this.errors = { username: [], password: [], detail: [] };
       // if (!this.username) {
       //   this.errors.push("Please Enter Email");
@@ -138,7 +141,7 @@ export default {
             this.loading = false;
             console.log(this.$store.state.cartCount);
             if (this.$store.state.cartCount == 0) {
-              this.$router.go(-1)
+              this.$router.push("/");
             } else {
               this.$router.push("/product-details");
             }

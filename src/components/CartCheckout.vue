@@ -82,11 +82,8 @@
                       </td>
 
                       <td v-if="hasProduct()">
-                        <a title="add item" @click="updateProduct(product.id)">
-                          <i class="fas fa-plus-circle fa-2x"></i>
-                        </a>
                         <a title="Remove item" @click="deleteProduct(product.id)">
-                          <i class="fas fa-minus-circle fa-2x"></i>
+                          <span class="text-danger font-weight-bold">REMOVE</span>
                         </a>
                       </td>
                     </tr>
@@ -97,15 +94,19 @@
                 <div class="float-right">
                   <h6>
                     Subtotal:
-                    <span class="float-right">{{totalPrice()}}$</span>
+                    <span class="float-right">{{cartdata.subtotal}}$</span>
                   </h6>
                   <p class="dark-grey-text">
                     Tax:
-                    <span class="float-right">{{tax()}}$</span>
+                    <span class="float-right">{{cartdata.tax}}$</span>
                   </p>
+                  <span class="dark-grey-text">
+                    Service fee:
+                    <span class="float-right">{{cartdata.service_fee}}$</span>
+                  </span>
                   <h4>
                     Total:
-                    <span class="float-right">{{Total()}}$</span>
+                    <span class="float-right">{{cartdata.price}}$</span>
                   </h4>
                   <div colspan="3" class="text-right">
                     <router-link to="/checkout">
@@ -151,6 +152,7 @@ import { mapGetters, mapActions } from "vuex";
 import api from "../services/api";
 import Footer from "@/components/Footer";
 export default {
+  name: "CartCheckout",
   computed: {
     ...mapGetters(["getProductsInCart"], {
       currentProduct: "getCurrentProduct"
@@ -164,19 +166,20 @@ export default {
       bag: require("@/assets/img/bag.png"),
       loading: false,
       carts: "",
-      error: []
+      error: [],
+      cartdata: ""
     };
   },
-  mounted() {
+  created() {
     this.loading = true;
     const cartid = this.$store.state.cart;
-    console.log('STATE.CART',cartid);
+    console.log("STATE.CART", cartid);
     api
       .get(`/order/viewcart/${cartid}/`)
       .then(res => {
         this.loading = false;
         this.carts = res.data;
-        localStorage.setItem("Carts",this.carts)
+        localStorage.setItem("Carts", this.carts);
         console.log(res.data);
       })
       .catch(err => {
@@ -184,7 +187,18 @@ export default {
         this.error = err;
         console.log(err);
       });
-      api.get('/order/designs/')
+
+    api
+      .get(`/order/getcartdata/${cartid}/`)
+      .then(res => {
+        this.loading = false;
+        console.log(res);
+        this.cartdata = res.data;
+      })
+      .catch(err => {
+        this.loading = false;
+        console.log(err);
+      });
   },
 
   methods: {
@@ -196,63 +210,20 @@ export default {
       this.addProduct(product);
     },
 
-    totalPrice() {
-      let subtotal = 0;
-
-      for (let product of this.$store.state.cartProducts) {
-        subtotal += parseFloat(product.totalPrice);
-      }
-      console.log("subtotal ", subtotal);
-      return subtotal.toFixed(2);
-    },
-    tax() {
-      let taxRate = 0.075;
-      let tax = 0;
-      for (let product of this.$store.state.cartProducts) {
-        tax = parseFloat(product.totalPrice) * taxRate;
-      }
-      return tax.toFixed(2);
-    },
-    Total() {
-      let taxRate = 0.075;
-      let subtotal = 0;
-      let total = 0;
-      for (let product of this.$store.state.cartProducts) {
-        subtotal += parseFloat(product.totalPrice);
-        total = subtotal + subtotal * taxRate;
-      }
-      return total.toFixed(2);
-    },
     //delete cart item
-    deleteProduct: function(id) {
+    deleteProduct: async id => {
       console.log("test for delete product");
-
-      this.$store.commit("removeFromCart")
-      let info = {
-        design: currentProduct.id,
-        count: 1
-      };
-      let data = JSON.stringify(info);
-      this.$store.dispatch("deleteProduct", { data, id });
+      try {
+        const res = await api.delete("/order/item/update/" + id + "/");
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      }
+      window.location.reload();
     },
     //go to product detail page
     addCurrentProduct(product) {
       this.currentProduct(product);
-    },
-    //update cart
-    updateProduct: function(id) {
-      console.log(currentProducts);
-      console.log(currentProducts.id);
-   
-
-      let info = {
-        design: currentProducts.id,
-        count: 1
-      };
-      this.addProduct(currentProduct);
-
-      let data = JSON.stringify(info);
-      this.$store.dispatch("updateProduct", { data, id });
     }
   }
 };

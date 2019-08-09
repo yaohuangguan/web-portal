@@ -12,15 +12,14 @@
           class="title-single font-weight-bold"
           style="color:#444; font-size:30px;letter-spacing:3px"
         >For Lover</h1>
-         <div class="text-center" v-if="loading">
-      <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
+        <div class="text-center" v-if="loading">
+          <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
       </div>
 
       <div class="row">
-       
         <div v-if="error">{{error}}</div>
         <div>
           <div>
@@ -91,13 +90,13 @@ export default {
   components: {
     Footer
   },
-  mounted() {
+  created() {
     this.loading = true;
     api
       .get("/order/designs/10/")
-      .then(response => {
+      .then(res => {
         this.loading = false;
-        this.products = response.data;
+        this.products = res.data;
       })
       .catch(err => {
         this.loading = false;

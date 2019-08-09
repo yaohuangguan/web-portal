@@ -6,7 +6,12 @@
       <br />
       <br />
       <br />
-      <div>
+      <div class="text-center" v-if="loading">
+        <div class="spinner-border text-success" style="width:70px;height:70px" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div v-else>
         <div class="card-body">
           <form
             class="form-a"
@@ -89,7 +94,7 @@
                     <fieldset class="has-icons-left has-icons-right">
                       <legend>Cellphone</legend>
                       <input
-                        type="text"
+                        type="number"
                         value="+1"
                         id="phone"
                         :class="['is-danger' ? phoneError : '', 'form-control d-block w-100 mb-2']"
@@ -135,7 +140,7 @@
                       <fieldset class="col-lg-4 col-md-6 mb-4">
                         <legend>Zip</legend>
                         <input
-                          type="text"
+                          type="number"
                           :class="['is-danger' ? ZipError : '', 'form-control']"
                           placeholder="90000"
                           v-model="zip"
@@ -224,14 +229,15 @@
                     <br />
                   </div>
                   <!--Card content-->
+
                   <div class="card-body" v-if="hasProduct()">
                     <h4 class="mb-4 mt-1 h5 text-center font-weight-bold">Summary</h4>
 
-                    <div v-for="(product, index) in getProductsInCart" :key="index">
+                    <div v-for="(product, index) in carts" :key="index">
                       <hr />
 
                       <dl class="row">
-                        <dd class="col-sm-8">{{product.name}}-{{product.tag}}</dd>
+                        <dd class="col-sm-8">{{product.design}}-{{product.message}}</dd>
                         <dd class="col-sm-4">
                           {{product.price}}$
                           <strong>X {{product.count}}</strong>
@@ -243,15 +249,19 @@
 
                     <h6>
                       Subtotal:
-                      <span class="float-right">{{totalPrice()}}$</span>
+                      <span class="float-right">{{cartdata.subtotal}}$</span>
                     </h6>
                     <p class="dark-grey-text">
                       Tax:
-                      <span class="float-right">{{tax()}}$</span>
+                      <span class="float-right">{{cartdata.tax}}$</span>
+                    </p>
+                    <p class="dark-grey-text">
+                      Service fee:
+                      <span class="float-right">{{cartdata.service_fee}}$</span>
                     </p>
                     <h4>
                       Total:
-                      <span class="float-right">{{Total()}}$</span>
+                      <span class="float-right">{{cartdata.price}}$</span>
                     </h4>
 
                     <hr />
@@ -260,7 +270,6 @@
                       class="btn btn-c btn-lg btn-block"
                       type="submit"
                       @click.prevent="validate"
-                      :disabled="cardCheckSending"
                     >
                       <span v-if="cardCheckSending">
                         <i class="fa fa-btn fa-spinner fa-spin"></i>
@@ -281,13 +290,11 @@
         </div>
       </div>
     </div>
-    <Footer />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Footer from "@/components/Footer";
 import {
   required,
   sameAs,
@@ -296,7 +303,7 @@ import {
   alphaNum,
   numeric
 } from "vuelidate/lib/validators";
-
+import api from "../services/api";
 export default {
   name: "checkout",
   data() {
@@ -559,7 +566,10 @@ export default {
 
       cardCheckSending: false,
 
-      cart: require("@/assets/img/bag.png")
+      cart: require("@/assets/img/bag.png"),
+      cartdata: "",
+      carts: "",
+      loading: false
     };
   },
   validations: {
@@ -569,8 +579,33 @@ export default {
     }
   },
 
-  component: {
-    Footer
+  created() {
+    this.loading = true;
+    const cartid = this.$store.state.cart;
+    api
+      .get(`/order/viewcart/${cartid}/`)
+      .then(res => {
+        this.loading = false;
+        this.carts = res.data;
+        localStorage.setItem("Carts", this.carts);
+        console.log(res.data);
+      })
+      .catch(err => {
+        this.loading = false;
+        this.error = err;
+        console.log(err);
+      });
+    api
+      .get(`/order/getcartdata/${cartid}/`)
+      .then(res => {
+        this.loading = false;
+        console.log(res);
+        this.cartdata = res.data;
+      })
+      .catch(err => {
+        this.loading = false;
+        console.log(err);
+      });
   },
   mounted() {
     var stripe = Stripe("pk_test_7joGoWp0YeNb2IEBQxc5cjn3000umtOlCQ");
@@ -637,7 +672,7 @@ export default {
   methods: {
     ...mapActions(["removeProduct", "currentProduct"]),
     hasProduct() {
-      return this.getProductsInCart.length > 0;
+      return this.carts.length > 0;
     },
     clearCardErrors() {
       this.firstNameError = null;
@@ -685,8 +720,9 @@ export default {
       }
     },
 
-    sendCart: function() {
-      let cardCheckSending = true;
+    sendCart: async function() {
+      const cartid = this.$store.state.cart;
+      this.cardCheckSending = true;
       let request = JSON.stringify({
         name: this.firstName + this.lastName,
         phone: this.phone,
@@ -695,37 +731,16 @@ export default {
         state: this.state,
         street: this.street
       });
-
-      this.$store.dispatch("sendCart", { request });
-    },
-
-    totalPrice() {
-      let subtotal = 0;
-
-      for (let product of this.$store.state.cartProducts) {
-        subtotal += parseFloat(product.totalPrice);
+      try {
+        const res = await api.post(`/order/checkout/${cartid}`, request);
+        this.cardCheckSending = false;
+        console.log(res);
+      } catch (error) {
+        this.cardCheckSending = false;
+        console.error(error);
       }
+    },
 
-      return subtotal.toFixed(2);
-    },
-    tax() {
-      let taxRate = 0.075;
-      let tax = 0;
-      for (let product of this.$store.state.cartProducts) {
-        tax = parseFloat(product.totalPrice) * taxRate;
-      }
-      return tax.toFixed(2);
-    },
-    Total() {
-      let taxRate = 0.075;
-      let subtotal = 0;
-      let total = 0;
-      for (let product of this.$store.state.cartProducts) {
-        subtotal += parseFloat(product.totalPrice);
-        total = subtotal + subtotal * taxRate;
-      }
-      return total.toFixed(2);
-    },
     remove(index) {
       this.removeProduct(index);
     },
@@ -765,5 +780,13 @@ h6.hr::after {
   flex: 1;
   background-color: lightgray;
   height: 1px;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>

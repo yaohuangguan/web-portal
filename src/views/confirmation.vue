@@ -158,48 +158,55 @@
 
   import Footer from "@/components/Footer";
   export default {
+    name:'confirmation',
+    data(){
+      return{
+        carts:''
+      }
+    },
     computed: {
       ...mapGetters(["getProductsInCart"])
     },
     components: {
-
-
-      Footer
+    Footer
     },
+    created() {
+    this.loading = true;
+    const cartid = this.$store.state.cart;
+    console.log("STATE.CART", cartid);
+    api
+      .get(`/order/viewcart/${cartid}/`)
+      .then(res => {
+        this.loading = false;
+        this.carts = res.data;
+        localStorage.setItem("Carts", this.carts);
+        console.log(res.data);
+      })
+      .catch(err => {
+        this.loading = false;
+        this.error = err;
+        console.log(err);
+      });
+
+    api
+      .get(`/order/getcartdata/${cartid}/`)
+      .then(res => {
+        this.loading = false;
+        console.log(res);
+        this.cartdata = res.data;
+      })
+      .catch(err => {
+        this.loading = false;
+        console.log(err);
+      });
+  },
 
     methods: {
       ...mapActions(['addProduct', "currentProduct"]),
       hasProduct() {
-        return this.getProductsInCart.length > 0;
+        return this.carts.length > 0;
       },
-      totalPrice() {
-        let subtotal = 0;
-
-        for (let product of this.$store.state.cartProducts) {
-          subtotal += parseFloat(product.totalPrice);
-
-        }
-
-        return subtotal.toFixed(2);
-      },
-      tax() {
-        let taxRate = 0.075;
-        let tax = 0;
-        for (let product of this.$store.state.cartProducts) {
-          tax = parseFloat(product.totalPrice) * taxRate;
-        }
-        return tax.toFixed(2);
-      },
-      Total() {
-        let taxRate = 0.075;
-        let subtotal = 0;
-        let total = 0;
-        for (let product of this.$store.state.cartProducts) {
-          subtotal += parseFloat(product.totalPrice);
-          total = subtotal + (subtotal * taxRate);
-        }
-        return total.toFixed(2);
-      },
+     
       removeFromCart(product) {
         this.$store.commit('removeFromCart', product);
       },
