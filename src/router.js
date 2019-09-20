@@ -99,17 +99,31 @@ const router = new Router({
     {
       path: "/cart",
       name: "cart",
-      component: CartCheckout
+      component: CartCheckout,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/thanks",
       name: "thanks",
-      component: () => import("./components/thankVendor.vue")
+      component: () => import("./components/thankVendor.vue"),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/checkout",
       name: "checkout",
       component: () => import("@/views/checkout.vue"),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path:'/payment',
+      name:'payment',
+      component:()=>import('./views/Payment.vue'),
       meta: {
         requiresAuth: true
       }

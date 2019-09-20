@@ -16,17 +16,21 @@
         </div>
         <div v-else>
           <div v-if="hasOrder()">
-            <div v-for="(data,index) in order" :key="index" class="col">
-              <div class="card-body">
-                 <p>Your Order id: {{data.id}}</p>
-                <p>Your Name:{{data.name}}</p>
-                <p>Your Order Price: {{data.price}}$</p>
-                <p>Delivery Address:{{data.deliver_address}}</p>
-                <p>Note:{{data.special_instruction}}</p>
-                <h4>{{data.status}}</h4>
-              </div>
-            </div>
-          </div>
+        <div class="row" v-for="(product,index) in products" :key="index">
+          
+                <div  v-for="(data,index) in order" :key="index" class="col">
+    
+                  <div class="card-body">
+                     <p>Your Order id: {{data.id}}</p>
+                    <p>Your Name:{{data.full_name}}</p>
+                    <p>Your Order Price: {{data.price}}$</p>
+                    <p>Delivery Address:{{data.delivery_address}}</p>
+                    <p>Note:{{data.special_instruction}}</p>
+                    <h4>{{data.status}}</h4>
+                  </div>
+                </div>
+        </div>
+        </div>
           <div v-else>NO ORDER FOUND</div>
           <p v-if="error">{{error}}</p>
         </div>
@@ -45,7 +49,8 @@ export default {
       loading: false,
       error: "",
       user: "",
-      check: false
+      check: false,
+      products:''
     };
   },
   methods: {
@@ -55,7 +60,7 @@ export default {
   },
   async created() {
     this.loading = true;
-
+    const cartid = this.$store.state.cart;
     try {
       const res = await api.get("/order/past/");
       this.loading = false;
@@ -64,6 +69,16 @@ export default {
     } catch (err) {
       this.loading = false;
       this.error = err;
+    }
+    try {
+      const res = await api.get('/order/viewcart/'+cartid+'/');
+      this.loading =false;
+      this.products = res.data;
+      console.log(res.data);
+      
+    } catch (error) {
+      this.loading = false;
+      this.error = error;
     }
   }
 };

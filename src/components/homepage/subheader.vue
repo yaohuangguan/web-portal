@@ -13,9 +13,9 @@ export default {
   methods: {
     handlescroll() {
       let span = document.getElementById("disappear");
-      if (window.scrollY > 5 && !span.className.includes("soildOrange")) {
+      if (window.scrollY > 1 && !span.className.includes("soildOrange")) {
         span.classList.add("soildOrange");
-      } else if (window.scrollY < 5) {
+      } else if (window.scrollY < 1) {
         span.classList.remove("soildOrange");
       }
     }

@@ -9,7 +9,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-4 mb-2">
-            <img :src="currentProduct.image" style="grid-column:1/2;width:80%" alt />
+            <img :src="currentProduct.download_url" style="grid-column:1/2;width:80%" alt />
             <br />
           </div>
 
@@ -17,11 +17,11 @@
             <form class="form-a" @submit.prevent="addCart">
               <div class="row">
                 <div class="col-md-12 mb-2 form-group">
-                  <h1 class="title-single">{{currentProduct.name}}</h1>
-                  <span class="color-text-a">{{currentProduct.tag}}</span>
+                  <h1 class="title-single">{{currentProduct.author}}</h1>
+                  <span class="color-text-a">{{currentProduct.width}}+{{currentProduct.height}}</span>
                   <h4 class="product-price">
                     Price :
-                    <b>$ {{ currentProduct.price }}</b>
+                    <b>$ {{ currentProduct.id }}</b>
                   </h4>
                 </div>
                 <div
@@ -30,7 +30,7 @@
                   <ul class="text-danger list-unstyled">
                     <li v-for="(error,index) in errors.shape" :key="index">Shape:{{ error }}</li>
                     <li v-for="(error,index) in errors.size" :key="index">Size:{{ error }}</li>
-                    <li v-for="(error,index) in errors.count" :key="index">Count:{{ error }}</li>
+                    <li v-for="(error,index) in errors.count" :key="index">Quantity:{{ error }}</li>
                   </ul>
                 </div>
 
@@ -124,12 +124,12 @@
             <br />
 
             <div class="col-md-4 float-right">
-              <div >
+              <div>
                 <btn btnColor="btn btn-b float-right" @click.native="addCart()">Add To Cart</btn>
               </div>
               <!-- <div v-if="isUpdated()">
                 <btn btnColor="btn btn-b float-right" @click.native="updateCart(currentProduct.id)">Update Your Cart</btn>
-              </div> -->
+              </div>-->
               <br />
               <br />
               <br />
@@ -231,7 +231,7 @@ export default {
       currentProduct: "getCurrentProduct"
     }),
     ...mapGetters(["getProductsInCart"]),
-  
+
     isLoggedIn: function() {
       return this.$store.getters.isLoggedIn;
     },
@@ -278,14 +278,13 @@ export default {
       }
     }
   },
-  mounted(){
-    console.log(this.$store.state.cart)
+  async created() {
+    console.log(this.$store.state.cart);
   },
   methods: {
     ...mapActions(["addProduct"]),
     isUpdated() {
-     
-      return this.$store.state.cart
+      return this.$store.state.cart;
     },
     //THIS IS UPDATING THE CART PRODUCT FUNCTION
     updateCart: function(id) {
@@ -357,7 +356,6 @@ export default {
             });
         }
       } else {
-        console.log("You have to log in ");
         this.$router.push("/login");
       }
     },

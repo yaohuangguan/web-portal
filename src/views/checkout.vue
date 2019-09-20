@@ -13,13 +13,7 @@
       </div>
       <div v-else>
         <div class="card-body">
-          <form
-            class="form-a"
-            @submit.prevent="sendCart"
-            action="/charge"
-            method="post"
-            id="payment-form"
-          >
+          <form class="form-a" @submit.prevent="sendCart" id="payment-form">
             <!--Grid row-->
             <div class="row">
               <!--Grid column-->
@@ -29,6 +23,13 @@
                   <p class="text-muted">
                     <strong>Step 1</strong> -> Step 2
                   </p>
+                </div>
+                <div v-if="errors.detail.length > 0">
+                    <ul v-for="(error,index) in errors.detail" :key="index">
+                      <li>
+                        {{ error }}
+                      </li>
+                    </ul>
                 </div>
 
                 <!-- Pills panels -->
@@ -99,6 +100,7 @@
                         id="phone"
                         :class="['is-danger' ? phoneError : '', 'form-control d-block w-100 mb-2']"
                         v-model="phone"
+                        placeholder="xxx-xxx-xxxx"
                         required
                       />
                       <div class="help is-danger" v-show="phoneError">{{phoneError}}</div>
@@ -159,46 +161,15 @@
                           v-model="engravingText"
                         ></textarea>
                       </fieldset>
+                      <br />
+                      <br />
+                      <br />
+                      <br />
 
                       <!--Grid column-->
                     </div>
                     <hr />
                     <!--Grid row-->
-                    <div class="title-single-box">
-                      <h2 class="title-single">Payment</h2>
-                      <p class="text-muted">
-                        Step 1 ->
-                        <strong>Step 2</strong>
-                      </p>
-                    </div>
-                    <div class="d-block my-3">
-                      <div class="mb-2">
-                        <input
-                          name="group2"
-                          type="radio"
-                          class="form-check-input with-gap"
-                          id="radioWithGap4"
-                          checked
-                          required
-                        />
-                        <label class="form-check-label" for="radioWithGap4">Credit card</label>
-                      </div>
-                      <div class="mb-2">
-                        <img
-                          src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppppcmcvdam.png"
-                          alt="Pay with PayPal, PayPal Credit or any major credit card"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div id="card-element">
-                          <!-- A Stripe Element will be inserted here. -->
-                        </div>
-                        <div id="card-errors" role="alert"></div>
-                      </div>
-                    </div>
                   </div>
                   <!--/.Panel 1-->
                 </div>
@@ -259,6 +230,10 @@
                       Service fee:
                       <span class="float-right">{{cartdata.service_fee}}$</span>
                     </p>
+                    <p class="dark-grey-text">
+                      Delivery fee:
+                      <span class="float-right">{{cartdata.delivery_fee}}$</span>
+                    </p>
                     <h4>
                       Total:
                       <span class="float-right">{{cartdata.price}}$</span>
@@ -273,9 +248,9 @@
                     >
                       <span v-if="cardCheckSending">
                         <i class="fa fa-btn fa-spinner fa-spin"></i>
-                        Ordering...
+                        processing...
                       </span>
-                      <span v-else>Place Order</span>
+                      <span v-else>Next to payment</span>
                     </button>
                   </div>
                 </div>
@@ -569,7 +544,8 @@ export default {
       cart: require("@/assets/img/bag.png"),
       cartdata: "",
       carts: "",
-      loading: false
+      loading: false,
+      errors: { detail: [] }
     };
   },
   validations: {
@@ -607,68 +583,6 @@ export default {
         console.log(err);
       });
   },
-  mounted() {
-    var stripe = Stripe("pk_test_7joGoWp0YeNb2IEBQxc5cjn3000umtOlCQ");
-    var elements = stripe.elements();
-    var style = {
-      base: {
-        color: "#32325d",
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#aab7c4"
-        }
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a"
-      }
-    };
-    var card = elements.create("card", { style: style });
-    card.mount("#card-element");
-    card.addEventListener("change", function(event) {
-      var displayError = document.getElementById("card-errors");
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = "";
-      }
-    });
-
-    var form = document.getElementById("payment-form");
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      stripe.createToken(card).then(function(result) {
-        if (result.error) {
-          // Inform the user if there was an error.
-          var errorElement = document.getElementById("card-errors");
-          errorElement.textContent = result.error.message;
-        } else {
-          // Send the token to your server.
-          stripeTokenHandler(result.token);
-        }
-      });
-    });
-
-    // Submit the form with the token ID.
-    function stripeTokenHandler(token) {
-      // Insert the token ID into the form so it gets submitted to the server
-      var form = document.getElementById("payment-form");
-      var hiddenInput = document.createElement("input");
-      hiddenInput.setAttribute("type", "hidden");
-      hiddenInput.setAttribute("name", "stripeToken");
-      hiddenInput.setAttribute("value", token.id);
-      form.appendChild(hiddenInput);
-
-      // Submit the form
-      form.submit();
-    }
-  },
-  computed: {
-    ...mapGetters(["getProductsInCart"])
-  },
   methods: {
     ...mapActions(["removeProduct", "currentProduct"]),
     hasProduct() {
@@ -702,6 +616,10 @@ export default {
         valid = false;
         this.ZipError = "Zip Code is Required";
       }
+      if (this.zip.length > 5) {
+        valid = false;
+        this.ZipError = "Please enter a valid zip code";
+      }
       if (!this.firstName) {
         valid = false;
         this.firstNameError = "First Name is Required";
@@ -714,6 +632,10 @@ export default {
         valid = false;
         this.phoneError = "Phone Number is Required";
       }
+      if (this.phone.length > 10) {
+        valid = false;
+        this.phoneError = "Please enter a valid cellphone number";
+      }
 
       if (valid) {
         this.sendCart();
@@ -724,29 +646,31 @@ export default {
       const cartid = this.$store.state.cart;
       this.cardCheckSending = true;
       let request = JSON.stringify({
-        name: this.firstName + this.lastName,
-        phone: this.phone,
-        zip: this.zip,
-        city: this.city,
-        state: this.state,
-        street: this.street
+        full_name: this.firstName + this.lastName,
+        cellphone: this.phone,
+        delivery_address: this.street + "," + this.city + "," + this.state,
+        delivery_zipcode: this.zip,
+        is_delivery: true,
+        is_pickup: false,
+        special_instructions: this.engravingText
       });
       try {
-        const res = await api.post(`/order/checkout/${cartid}`, request);
+        const res = await api.put(`/order/delivery/${cartid}/`, request);
         this.cardCheckSending = false;
         console.log(res);
-      } catch (error) {
+        this.$router.push("/payment");
+      } catch (err) {
         this.cardCheckSending = false;
-        console.error(error);
+        console.log(err.response.statusText)
+        if (err.response) {
+          this.errors.detail = this.errors.detail.concat(err.resposne.statusText);
+        }
+        console.log(this.errors.detail);
       }
-    },
-
-    remove(index) {
-      this.removeProduct(index);
-    },
-    addCurrentProduct(product) {
-      this.currentProduct(product);
     }
+  },
+  addCurrentProduct(product) {
+    this.currentProduct(product);
   }
 };
 </script>

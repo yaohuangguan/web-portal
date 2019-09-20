@@ -64,7 +64,6 @@ api.interceptors.response.use(
             throw error;
           }
 
-
           break;
 
         case 403:
@@ -73,6 +72,8 @@ api.interceptors.response.use(
             query: { redirect: router.currentRoute.fullPath }
           });
           break;
+        case 404:
+          throw error;
 
         default:
           throw error;

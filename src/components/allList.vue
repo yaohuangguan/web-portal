@@ -11,8 +11,8 @@
         <div class="card">
           <router-link to="/product-details">
             <img
-              :src="img + product.image"
-              alt
+              :src="product.download_url"
+              alt="pic"
               class="img-b img-fluid card-img-top"
               style="height:250px"
               @click="addCurrentProduct(product)"
@@ -21,20 +21,23 @@
 
           <div class="card-header-b">
             <div class="card-category-b">
-              <a class="category-b">{{product.tag}}</a>
+              <a class="category-b">{{product.author}}</a>
             </div>
           </div>
           <br />
           <div class="card-body">
             <div class="card-title">
               <router-link to="/product-details">
-                <h2 class="product-name" @click="addCurrentProduct(product)">{{ product.name }}</h2>
+                <h2
+                  class="product-name"
+                  @click="addCurrentProduct(product)"
+                >{{ product.weight }}+{{product.height}}</h2>
               </router-link>
             </div>
 
             <div class="card-text">
               <div class="product-price">
-                <span style="color:rgba(61, 204, 89, 1);font-size:20px">$ {{ product.price }}</span>
+                <span style="color:rgba(61, 204, 89, 1);font-size:20px">$ {{ product.id }}</span>
               </div>
             </div>
           </div>
@@ -61,30 +64,39 @@ export default {
       image: "",
       img:
         "http://www.cookiecannon-static.s3.awsamazon.com/order/design/image/",
-      designid: ""
+      designid: "",
+      pic: ""
     };
   },
   computed: {},
   async created() {
     this.loading = true;
-    try {
-      const res = await api.get("/order/designs/featured/");
-      
-      this.products = res.data;
-      this.loading = false;
-      this.designid = res.data.id;
-      console.log("RESPONSE FROM FEATURED DESIGNS", res.data);
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const res = await api.get("/");
 
+    //   this.products = res.data;
+    //   this.loading = false;
+    //   this.designid = res.data.id;
+    //   console.log("RESPONSE FROM FEATURED DESIGNS", res.data);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+    // try {
+    //   const res = await api.get("/");
+    //   this.loading = false;
+    //   this.all = res.data;
+    //   console.log("response from get designs/all/", res.data);
+    // } catch (error) {
+    //   console.error(error);
+    // }
     try {
-      const res = await api.get("/order/designs/all/");
+      const res = await api.get("/");
       this.loading = false;
-      this.all = res.data;
-      console.log("response from get designs/all/", res.data);
+      console.log(res.data);
+      this.products = res.data;
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   },
 

@@ -5,16 +5,16 @@ import router from "./router";
 
 Vue.use(Vuex);
 
-let cartProducts = window.localStorage.getItem("cartProducts");
-let cartCount = window.localStorage.getItem("cartCount");
-let currentProduct = window.localStorage.getItem("currentProduct");
-let Cart = window.localStorage.getItem("Cart");
+let cartProducts = localStorage.getItem("cartProducts");
+let cartCount = localStorage.getItem("cartCount");
+let currentProduct = localStorage.getItem("currentProduct");
+let Cart = localStorage.getItem("Cart");
 function saveCart(cartProducts, cartCount) {
-  window.localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
-  window.localStorage.setItem("cartCount", cartCount);
+  localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+  localStorage.setItem("cartCount", cartCount);
 }
 function saveCurrent(currentProduct) {
-  window.localStorage.setItem("currentProduct", JSON.stringify(currentProduct));
+  localStorage.setItem("currentProduct", JSON.stringify(currentProduct));
 }
 
 console.log("Cart Products", cartProducts);
@@ -302,7 +302,7 @@ const store = new Vuex.Store({
             localStorage.setItem("refresh_token", refresh_token);
             localStorage.setItem("access_token", access_token);
             commit("auth_success", access_token, refresh_token);
-            console.log("new token", access_token);
+            console.log("new token", access_token,refresh_token);
             resolve(res);
           })
           .catch(err => {

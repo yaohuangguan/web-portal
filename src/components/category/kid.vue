@@ -28,7 +28,7 @@
                 <div class="card">
                   <router-link to="/product-details">
                     <img
-                      :src="product.image"
+                      :src="product.download_url"
                       alt
                       class="img-b img-fluid card-img-top"
                       style="height:250px"
@@ -38,7 +38,7 @@
 
                   <div class="card-header-b">
                     <div class="card-category-b">
-                      <a class="category-b">{{product.tag}}</a>
+                      <a class="category-b">{{product.author}}</a>
                     </div>
                   </div>
                   <br />
@@ -48,15 +48,13 @@
                         <h2
                           class="product-name"
                           @click="addCurrentProduct(product)"
-                        >{{ product.name }}</h2>
+                        >{{ product.width }}</h2>
                       </router-link>
                     </div>
 
                     <div class="card-text">
                       <div class="product-price">
-                        <span
-                          style="color:rgba(61, 204, 89, 1);font-size:20px"
-                        >$ {{ product.price }}</span>
+                        <span style="color:rgba(61, 204, 89, 1);font-size:20px">$ {{ product.id }}</span>
                       </div>
                     </div>
                   </div>
@@ -84,23 +82,26 @@ export default {
     return {
       products: "",
       loading: false,
+      pic: "https://picsum.photos/200/300",
       error: ""
     };
   },
   components: {
     Footer
   },
- created() {
+  created() {
     this.loading = true;
     api
-      .get("/order/designs/8/")
+      .get("/")
       .then(res => {
         this.loading = false;
         this.products = res.data;
       })
       .catch(err => {
         this.loading = false;
-        this.error = err;
+        if (err) {
+          this.loading = true;
+        }
       });
   },
   methods: {
