@@ -79,7 +79,7 @@ const store = new Vuex.Store({
     },
 
     removeAll: state => {
-      state.cartProducts.splice(0);
+      state.cartProducts = "";
       state.cartCount = 0;
 
       saveCart(state.cartProducts, state.cartCount);
@@ -302,7 +302,7 @@ const store = new Vuex.Store({
             localStorage.setItem("refresh_token", refresh_token);
             localStorage.setItem("access_token", access_token);
             commit("auth_success", access_token, refresh_token);
-            console.log("new token", access_token,refresh_token);
+            console.log("new token", access_token, refresh_token);
             resolve(res);
           })
           .catch(err => {

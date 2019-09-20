@@ -99,34 +99,34 @@ const router = new Router({
     {
       path: "/cart",
       name: "cart",
-      component: CartCheckout,
-      meta: {
-        requiresAuth: true
-      }
+      component: CartCheckout
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
     {
       path: "/thanks",
       name: "thanks",
-      component: () => import("./components/thankVendor.vue"),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import("./components/thankVendor.vue")
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
     {
       path: "/checkout",
       name: "checkout",
-      component: () => import("@/views/checkout.vue"),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import("@/views/checkout.vue")
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
     {
-      path:'/payment',
-      name:'payment',
-      component:()=>import('./views/Payment.vue'),
-      meta: {
-        requiresAuth: true
-      }
+      path: "/payment",
+      name: "payment",
+      component: () => import("./views/Payment.vue")
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
 
     {
@@ -136,8 +136,7 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
-    },
-   
+    }
   ]
 });
 
@@ -155,8 +154,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.path == "/login" && store.getters.isLoggedIn) {
     router.replace({
-      path: "/",
-     
+      path: "/"
     });
   }
 });

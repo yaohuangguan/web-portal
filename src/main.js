@@ -18,6 +18,9 @@ import api from "./services/api";
 Vue.config.productionTip = false;
 Vue.prototype.$http = api;
 api.defaults.timeout = 10000;
+document.addEventListener("click", function() {
+  console.clear();
+});
 const token = localStorage.getItem("access_token");
 if (token) {
   Vue.prototype.$http.defaults.headers.common["Authorization"] =

@@ -210,18 +210,18 @@ export default {
   mounted() {
     const cartid = this.$store.state.cart;
     console.log("THIS IS THE STATE.CART", cartid);
-    api
-      .get(`/order/viewcart/${cartid}/`)
-      .then(res => {
-        this.loading = false;
-        this.carts = res.data;
-        console.log("response from view cart", res.data);
-      })
-      .catch(err => {
-        this.loading = false;
-        this.error = err;
-        console.log("error from view cart", err);
-      });
+    // api
+    //   .get(``)
+    //   .then(res => {
+    //     this.loading = false;
+    //     this.carts = res.data;
+    //     console.log("response from view cart", res.data);
+    //   })
+    //   .catch(err => {
+    //     this.loading = false;
+    //     this.error = err;
+    //     console.log("error from view cart", err);
+    //   });
   },
   methods: {
     hasProduct() {
