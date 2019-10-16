@@ -2,7 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import axios from "axios";
-import store from "./store.js";
 
 import Product from "@/components/Product";
 import CartCheckout from "@/components/CartCheckout";
@@ -132,32 +131,29 @@ const router = new Router({
     {
       path: "/order-success/${id}",
       name: "order-success",
-      component: () => import("@/views/confirmation.vue"),
-      meta: {
-        requiresAuth: true
-      }
+      component: () => import("@/views/confirmation.vue")
     }
   ]
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.isLoggedIn) {
-      next();
-      return;
-    }
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (store.getters.isLoggedIn) {
+//       next();
+//       return;
+//     }
 
-    next("/register");
-  } else {
-    next();
-  }
+//     next("/register");
+//   } else {
+//     next();
+//   }
 
-  if (to.path == "/login" && store.getters.isLoggedIn) {
-    router.replace({
-      path: "/"
-    });
-  }
-});
+//   if (to.path == "/login" && store.getters.isLoggedIn) {
+//     router.replace({
+//       path: "/"
+//     });
+//   }
+// });
 
 // eslint-disable-next-line no-unused-vars
 router.afterEach((to, from, next) => {

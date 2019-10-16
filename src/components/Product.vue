@@ -322,7 +322,7 @@ export default {
         console.log("Data: ", data);
 
         if (this.shape === "" || this.size === "") {
-          return null;
+          return;
         } else {
           this.$store
             .dispatch("updateCart", data)

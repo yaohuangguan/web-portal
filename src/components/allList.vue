@@ -11,6 +11,7 @@
         <div class="card">
           <router-link to="/product-details">
             <img
+              v-lazyload
               :src="product.download_url"
               alt="pic"
               class="img-b img-fluid card-img-top"
@@ -52,6 +53,7 @@ import { mapActions, mapState } from "vuex";
 import btn from "./Btn";
 import api from "../services/api";
 import axios from "axios";
+
 export default {
   components: {
     btn
