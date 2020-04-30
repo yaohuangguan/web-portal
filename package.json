@@ -13,7 +13,7 @@
     "bootstrap-vue": "^2.0.0-rc.22",
     "core-js": "^2.6.5",
     "inspector": "^0.5.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jwt-decode": "^2.2.0",
     "mdbootstrap": "^4.8.3",
     "mdbvue": "^5.5.0",
